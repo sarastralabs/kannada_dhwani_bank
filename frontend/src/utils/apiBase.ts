@@ -14,6 +14,7 @@ export function getApiBase(): string {
 /** Known Cloudflare host → agent lobby (admin “open lobby” links). */
 const CLOUDFLARE_AGENT_URL: Record<string, string> = {
   "admin.sarastralabs.com": "https://agent.sarastralabs.com",
+  "admin-dhwani.sarastralabs.com": "https://dhwani.sarastralabs.com",
 };
 
 /** Agent lobby URL for admin "open lobby" links — http on localhost, same protocol elsewhere. */
