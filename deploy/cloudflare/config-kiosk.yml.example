@@ -1,0 +1,28 @@
+# Cloudflare tunnel — Kiosk public UI (optional)
+# Copy to:  %USERPROFILE%\.cloudflared\config-kiosk.yml
+# Requires Vite dev servers on :5173 (agent) and :5174 (admin).
+#
+# Performance: route /api directly to uvicorn (:8000) so polling and voice
+# calls skip the Vite dev proxy hop. Rules are evaluated top-to-bottom.
+
+tunnel: sarastra-kiosk
+credentials-file: C:\Users\<YOUR-USER>\.cloudflared\<TUNNEL-UUID>.json
+
+ingress:
+  # API — direct to FastAPI (faster than Vite proxy)
+  - hostname: agent.sarastralabs.com
+    path: ^/api
+    service: http://127.0.0.1:8000
+  - hostname: admin.sarastralabs.com
+    path: ^/api
+    service: http://127.0.0.1:8000
+  # UI — Vite dev HTTPS
+  - hostname: agent.sarastralabs.com
+    service: https://127.0.0.1:5173
+    originRequest:
+      noTLSVerify: true
+  - hostname: admin.sarastralabs.com
+    service: https://127.0.0.1:5174
+    originRequest:
+      noTLSVerify: true
+  - service: http_status:404

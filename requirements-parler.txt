@@ -1,0 +1,21 @@
+# Isolated env for AI4Bharat Indic Parler-TTS only.
+# transformers MUST stay <4.50 (parler-tts generate() incompatibility).
+# Do NOT install this into the main project venv (breaks IndicTrans2).
+#
+# Setup (PowerShell from repo root):
+#   .\scripts\setup_parler_venv.ps1
+
+torch>=2.1.0,<2.5.0
+torchaudio>=2.1.0,<2.5.0
+transformers==4.46.1
+accelerate>=0.25.0
+sentencepiece>=0.2.0
+soundfile>=0.12.1
+numpy>=1.24,<2.1
+huggingface_hub>=0.23,<1
+# Install parler-tts without letting it re-pin transformers:
+#   pip install git+https://github.com/huggingface/parler-tts.git --no-deps
+#   pip install protobuf descript-audiotools descript-audio-codec
+protobuf>=4.0,<5
+descript-audiotools>=0.7.0
+descript-audio-codec>=1.0.0

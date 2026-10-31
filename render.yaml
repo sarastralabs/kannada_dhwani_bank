@@ -1,0 +1,23 @@
+# Render blueprint — backend API only (frontends go on Cloudflare Pages).
+# Secrets are set in the Render dashboard (sync: false), never committed.
+services:
+  - type: web
+    name: dhwani-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: BANK_ADMIN_USER
+        value: admin
+      - key: BANK_ADMIN_PASS
+        sync: false
+      - key: SARVAM_API_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: dhwani
+      - key: BANK_CORS_ORIGINS
+        sync: false # e.g. https://dhwani-kiosk.pages.dev,https://dhwani-admin.pages.dev
+      - key: BANK_PIPELINE_WARM_ON_START
+        value: "0"

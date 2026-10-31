@@ -1,0 +1,93 @@
+/*
+ * Dhwani theme — single source of truth for colour. Imported after the legacy
+ * stylesheets so it re-themes both the kiosk (5173) and staff console (5174).
+ * Palette: deep indigo (trust) + saffron (warmth) + teal (listening) on warm cream.
+ */
+
+:root {
+  --dh-indigo-950: #120d33;
+  --dh-indigo-900: #1b1450;
+  --dh-indigo-700: #3a2f9e;
+  --dh-indigo-500: #5b4ee0;
+  --dh-saffron: #ffa62b;
+  --dh-saffron-deep: #e0820b;
+  --dh-teal: #14b8a6;
+  --dh-rose: #ef476f;
+  --dh-cream: #fbf6ee;
+
+  --bg: var(--dh-cream);
+  --surface: #ffffff;
+  --text: #1c1838;
+  --muted: #6b6788;
+  --accent: var(--dh-indigo-700);
+  --accent-hover: var(--dh-indigo-900);
+  --danger: var(--dh-rose);
+  --border: #e6e0f0;
+  --shadow: 0 10px 30px rgba(27, 20, 80, 0.1);
+  --topbar: var(--dh-indigo-900);
+
+  --gold: var(--dh-saffron);
+  --gold-soft: rgba(255, 166, 43, 0.24);
+  --lobby-deep: var(--dh-indigo-950);
+  --lobby-mid: #2a1f7a;
+  --lobby-ink: #f7f4ff;
+  --listen: #0e9f8e;
+  --listen-soft: #e3f7f4;
+  --think: var(--dh-saffron-deep);
+  --think-soft: #fff3e0;
+  --speak: var(--dh-indigo-500);
+  --speak-soft: #ebe8ff;
+
+  background:
+    radial-gradient(ellipse at top, #f3e9ff 0%, transparent 55%),
+    var(--bg);
+}
+
+/* Kiosk lobby backgrounds (the legacy rules hard-code blues). */
+.lobby-shell {
+  background:
+    radial-gradient(ellipse at 78% 12%, var(--gold-soft) 0%, transparent 42%),
+    radial-gradient(ellipse at 50% 8%, rgba(110, 90, 240, 0.4) 0%, transparent 48%),
+    radial-gradient(ellipse at 12% 0%, #3a2f9e 0%, transparent 52%),
+    linear-gradient(160deg, var(--lobby-deep) 0%, var(--lobby-mid) 48%, #1a1160 100%);
+}
+
+.lobby-shell.lobby-phase-greeting {
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(255, 166, 43, 0.3) 0%, transparent 45%),
+    radial-gradient(ellipse at 20% 0%, #3a2f9e 0%, transparent 50%),
+    linear-gradient(160deg, #150f40 0%, #2f2394 45%, #1a1160 100%);
+}
+
+.lobby-shell.lobby-phase-conversation {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(20, 184, 166, 0.18) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 10%, rgba(110, 90, 240, 0.36) 0%, transparent 45%),
+    linear-gradient(160deg, var(--lobby-deep) 0%, var(--lobby-mid) 45%, #1a1160 100%);
+}
+
+.lobby-ambient-orb--1 {
+  background: rgba(255, 166, 43, 0.32);
+}
+
+.lobby-ambient-orb--2 {
+  background: rgba(91, 78, 224, 0.45);
+}
+
+/* Staff console tokens. */
+.ac-shell,
+.ac-gate {
+  --ac-navy: var(--dh-indigo-900);
+  --ac-navy-2: #2a1f7a;
+  --ac-gold: var(--dh-saffron);
+  --ac-gold-dark: var(--dh-saffron-deep);
+  --ac-bg: #f7f3ec;
+  --ac-text: #1c1838;
+  --ac-muted: #6b6788;
+  --ac-border: #e6e0f0;
+  --ac-soft: #faf8fd;
+  --ac-blue: var(--dh-indigo-500);
+  --ac-green: #0e9f8e;
+  --ac-red: var(--dh-rose);
+  --ac-shadow: 0 1px 2px rgba(27, 20, 80, 0.05), 0 8px 24px rgba(27, 20, 80, 0.08);
+}

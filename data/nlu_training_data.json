@@ -1,0 +1,1206 @@
+[
+  {
+    "text": "I want to open a savings account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open a new account",
+    "intent": "open_account"
+  },
+  {
+    "text": "How do I open an account here",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to start a bank account",
+    "intent": "open_account"
+  },
+  {
+    "text": "Please help me open an account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I would like to open a current account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a fixed deposit account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to create a new bank account",
+    "intent": "open_account"
+  },
+  {
+    "text": "Can I open an account today",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a recurring deposit",
+    "intent": "open_account"
+  },
+  {
+    "text": "Please open a savings account for me",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need a new account opened",
+    "intent": "open_account"
+  },
+  {
+    "text": "How to open account in this bank",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open account for my wife",
+    "intent": "open_account"
+  },
+  {
+    "text": "Open a joint account for us",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open a zero balance account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to start a fixed deposit today",
+    "intent": "open_account"
+  },
+  {
+    "text": "Help me open a new savings account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a Jan Dhan account",
+    "intent": "open_account"
+  },
+  {
+    "text": "Please create a bank account for me",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open account for my son",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a senior citizen account",
+    "intent": "open_account"
+  },
+  {
+    "text": "Can you help me start an account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a student savings account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open an account urgently",
+    "intent": "open_account"
+  },
+  {
+    "text": "Open an account in my name",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to start a recurring deposit account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open a new fixed deposit",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a basic savings account",
+    "intent": "open_account"
+  },
+  {
+    "text": "Please open an account for my family",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open a PPF account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a business account",
+    "intent": "open_account"
+  },
+  {
+    "text": "How can I open an account here",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open account for farming work",
+    "intent": "open_account"
+  },
+  {
+    "text": "Please start a new account for me",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open an NRI account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open a minor account for my child",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need to open a new savings account today",
+    "intent": "open_account"
+  },
+  {
+    "text": "Can I start a fixed deposit account",
+    "intent": "open_account"
+  },
+  {
+    "text": "I want to open account with minimum balance",
+    "intent": "open_account"
+  },
+  {
+    "text": "I need a bank account opened in this branch",
+    "intent": "open_account"
+  },
+  {
+    "text": "Please help me start a savings account",
+    "intent": "open_account"
+  },
+  {
+    "text": "What is my account balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much money is in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Tell me my balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Check my account balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much do I have in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "What is the balance in my savings account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to know my account balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Please tell me how much money I have",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Can you check my balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much balance is there in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I need to know my current balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "What is the remaining balance in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Tell me how much is left in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to check my bank balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much money do I have left",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Please show me my account balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I need a mini statement",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Give me my account statement",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much is in my fixed deposit",
+    "intent": "check_balance"
+  },
+  {
+    "text": "What is the balance of my recurring deposit",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to see my last transactions",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Show me my recent transactions",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much money is available in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to know how much is in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Can you tell me my savings account balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "What is my current account balance",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much money is there in my savings",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I need to check how much money I have",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Please check the balance in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Tell me the amount in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "What is the total amount in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to know the balance amount",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much rupees are in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Check how much money I have in the bank",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I need my account balance right now",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Please give me my balance details",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to see my balance today",
+    "intent": "check_balance"
+  },
+  {
+    "text": "What amount is available in my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "How much is the balance in my account right now",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I need mini statement for my account",
+    "intent": "check_balance"
+  },
+  {
+    "text": "Tell me the balance of my account number",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to know account balance please",
+    "intent": "check_balance"
+  },
+  {
+    "text": "I want to apply for a loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "How do I apply for a loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to take a personal loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Can I get an agriculture loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a home loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Please help me apply for a loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for a crop loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need money for farming please give loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "How can I get a loan from this bank",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to take a loan for my house",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan for medical expenses",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Can I apply for a self help group loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for a Kisan credit card",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan for my daughter marriage",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "How to get loan from bank",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to borrow money from the bank",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan of fifty thousand rupees",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Please give me a loan for education",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to take a vehicle loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need loan for buying tractor",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Can I get a loan against my property",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for a gold loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan to start a small business",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "How do I get a mudra loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for a two lakh loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Please help me with a loan application",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan for irrigation",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to take loan for seeds and fertilizer",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Can I apply for a personal loan today",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need urgent loan for family emergency",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "How much loan can I get from this bank",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for SHG loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan for house repair",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Please process my loan application",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to know how to apply for loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need loan sanctioned quickly",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Can I get a loan for my shop",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for a dairy loan",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I need a loan for buying seeds",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "Please help me get a loan approved",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to apply for a new loan today",
+    "intent": "apply_loan"
+  },
+  {
+    "text": "I want to deposit money",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to put money in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please deposit five thousand rupees in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to add money to my savings account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit cash",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Can I deposit money here",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to put ten thousand rupees in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please accept my deposit",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit two thousand rupees",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit my salary in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "How do I deposit money in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to add funds to my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit cash in my account today",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please put this money in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit fifty thousand rupees",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to make a cash deposit",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Can you deposit money in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to put some cash in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit money for my recurring deposit",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please help me deposit money",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to credit money to my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit harvest money in account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit government scheme money",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please deposit this amount in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to put my savings in the bank",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit money received from crop sale",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to add twenty thousand to my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please accept this cash deposit",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit money in fixed deposit",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to put money in my account now",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Can I deposit money at this counter",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit my pension amount",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit money for my daughter education",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please deposit five hundred rupees monthly",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit cash urgently",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to make a deposit of one lakh rupees",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Can you please deposit this money for me",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to put cash into my savings account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit subsidy amount in account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "Please deposit this cash in my account",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I need to deposit money right now",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to deposit my daily earnings",
+    "intent": "deposit_money"
+  },
+  {
+    "text": "I want to withdraw money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to take out some cash",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please give me five thousand rupees from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to withdraw ten thousand rupees",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need cash from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Can I withdraw money here",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to take out my money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please give me my money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw two thousand rupees",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to take cash from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "How do I withdraw money from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw my salary",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to withdraw money for medical treatment",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please give me five hundred rupees from account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw fifty thousand rupees today",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to make a cash withdrawal",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Can you give me cash from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to take out all my money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to withdraw money for farming expenses",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please help me withdraw money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to debit money from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to withdraw my pension money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to take out government scheme money",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please give me this amount in cash",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to take my savings out",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw money for seed purchase",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to take twenty thousand from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please process my withdrawal request",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw money from fixed deposit",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to get cash from my account now",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Can I withdraw money at this counter",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw my maturity amount",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to withdraw money for my son fees",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please give me one lakh rupees from account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need cash urgently from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to make a withdrawal of one lakh rupees",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Can you please give me cash from my account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to take cash out of my savings account",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to withdraw my subsidy amount",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "Please process this cash withdrawal for me",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I need to withdraw money right now",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "I want to take out my daily earnings",
+    "intent": "withdraw_money"
+  },
+  {
+    "text": "What documents do I need to open an account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the minimum balance for savings account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What are the bank timings",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Do I need a nominee for my account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How long does it take to open an account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process to open an account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What documents are required for a loan",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How many days to get a loan approved",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the ATM withdrawal limit",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Can I open an account without Aadhaar",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the penalty for not maintaining minimum balance",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I update my mobile number in account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process to close an account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Can I have two accounts in the same bank",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What happens if I lose my passbook",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I block my ATM card",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the charge for cheque book",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I activate internet banking",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What are the charges for RTGS and NEFT",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Can I transfer money to another bank",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process for name change in account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I link Aadhaar to my account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the branch IFSC code",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How many times can I withdraw from ATM",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the daily transaction limit",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I get a new debit card",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process to update address in account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Can I change my account to another branch",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I get account statement",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What are the eligibility criteria for loan",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I add a joint holder to my account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the maximum amount I can deposit",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I set up auto debit for loan repayment",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process to renew fixed deposit",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Can I get a duplicate passbook",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process to update nominee details",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I apply for a credit card",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What are the KYC requirements",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I check if my cheque has cleared",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the process for loan foreclosure",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Can I withdraw money without ATM card",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What are the services available at this branch",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "What is the interest rate for savings account",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest rate for fixed deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate on agriculture loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest will I get on recurring deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the loan interest rate",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest does savings account give",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the current interest rate for home loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest rate for personal loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest will I earn on fixed deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the rate of interest for gold loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest does the bank give on deposits",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for education loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the FD interest rate",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the RD interest rate",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest will I pay on personal loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for crop loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest rate for vehicle loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the current home loan rate",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest will I get for one year fixed deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for self help group loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me how much interest the bank will give me",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the savings account interest rate per year",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest for two lakh fixed deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest charged on overdue loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest rate for kisan credit card",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the penalty interest rate for late payment",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest will I earn in five years",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the current FD rate for senior citizens",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest rate for mudra loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for one lakh loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest will the bank charge me",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for dairy loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest on my recurring deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What rate of interest does this bank offer",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much will I earn if I deposit one lakh",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for SHG members",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the best interest rate for deposits",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for three year fixed deposit",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "How much interest for a five lakh loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the subsidy interest rate for agriculture loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "Tell me the interest rate for government scheme loans",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "What is the interest rate for business loan",
+    "intent": "interest_rate_query"
+  },
+  {
+    "text": "I need to change my name",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "I need to update my name",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Please change my name in bank records",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "How do I correct my name spelling",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "I need to update my personal details",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "My name needs to be changed in the account",
+    "intent": "account_info_query"
+  },
+  {
+    "text": "Name change in account is required",
+    "intent": "account_info_query"
+  }
+]

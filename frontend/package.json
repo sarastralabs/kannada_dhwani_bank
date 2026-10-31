@@ -1,0 +1,35 @@
+{
+  "name": "bank-assistant-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:agent": "vite --config vite.config.ts",
+    "dev:admin": "vite --config vite.admin.config.ts",
+    "dev:all": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-all.ps1",
+    "build": "tsc -b && vite build && vite build --config vite.admin.config.ts",
+    "build:agent": "tsc -b && vite build",
+    "build:admin": "tsc -b && vite build --config vite.admin.config.ts",
+    "preview:agent": "vite preview --config vite.config.ts --port 5173 --host",
+    "preview:admin": "vite preview --config vite.admin.config.ts --port 5174 --host",
+    "preview:all": "powershell -ExecutionPolicy Bypass -File ./scripts/run-kiosk-prod.ps1",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "lottie-react": "^2.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "selfsigned": "^5.5.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^3.2.7"
+  }
+}

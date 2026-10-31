@@ -1,0 +1,53 @@
+{
+  "interest_rates": {
+    "savings_account":   "3 point 5 percent per annum",
+    "fixed_deposit_1yr": "6 point 5 percent per annum",
+    "fixed_deposit_3yr": "7 point 0 percent per annum",
+    "fixed_deposit_5yr": "7 point 25 percent per annum",
+    "home_loan":         "8 point 5 percent per annum, floating rate",
+    "personal_loan":     "11 percent per annum",
+    "education_loan":    "9 percent per annum",
+    "car_loan":          "9 point 5 percent per annum"
+  },
+  "interest_rates_kn": {
+    "savings_account":   "ಉಳಿತಾಯ ಖಾತೆ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಮೂರು ದಶಮಾಂಶ ಐದು.",
+    "fixed_deposit_1yr": "ಒಂದು ವರ್ಷದ ಸ್ಥಿರ ಠೇವಣಿ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಆರು ದಶಮಾಂಶ ಐದು.",
+    "fixed_deposit_3yr": "ಮೂರು ವರ್ಷದ ಸ್ಥಿರ ಠೇವಣಿ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಏಳು.",
+    "fixed_deposit_5yr": "ಐದು ವರ್ಷದ ಸ್ಥಿರ ಠೇವಣಿ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಏಳು ದಶಮಾಂಶ ಇಪ್ಪತ್ತೈದು.",
+    "home_loan":         "ಗೃಹ ಸಾಲ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಎಂಟು ದಶಮಾಂಶ ಐದು, ತೇಲುವ ದರ.",
+    "personal_loan":     "ವೈಯಕ್ತಿಕ ಸಾಲ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಹನ್ನೊಂದು.",
+    "education_loan":    "ಶಿಕ್ಷಣ ಸಾಲ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಒಂಬತ್ತು.",
+    "car_loan":          "ವಾಹನ ಸಾಲ: ವಾರ್ಷಿಕ ಶೇಕಡಾ ಒಂಬತ್ತು ದಶಮಾಂಶ ಐದು."
+  },
+  "interest_rates_all_kn": "ಇಲ್ಲಿ ನಮ್ಮ ಪ್ರಸ್ತುತ ಬಡ್ಡಿ ದರಗಳು: ಉಳಿತಾಯ ಖಾತೆ ವಾರ್ಷಿಕ ಶೇಕಡಾ ಮೂರು ದಶಮಾಂಶ ಐದು. ಒಂದು ವರ್ಷದ ಸ್ಥಿರ ಠೇವಣಿ ಶೇಕಡಾ ಆರು ದಶಮಾಂಶ ಐದು. ಮೂರು ವರ್ಷದ ಸ್ಥಿರ ಠೇವಣಿ ಶೇಕಡಾ ಏಳು. ಐದು ವರ್ಷದ ಸ್ಥಿರ ಠೇವಣಿ ಶೇಕಡಾ ಏಳು ದಶಮಾಂಶ ಇಪ್ಪತ್ತೈದು. ಗೃಹ ಸಾಲ ಶೇಕಡಾ ಎಂಟು ದಶಮಾಂಶ ಐದು. ವೈಯಕ್ತಿಕ ಸಾಲ ಶೇಕಡಾ ಹನ್ನೊಂದು. ಶಿಕ್ಷಣ ಸಾಲ ಶೇಕಡಾ ಒಂಬತ್ತು. ವಾಹನ ಸಾಲ ಶೇಕಡಾ ಒಂಬತ್ತು ದಶಮಾಂಶ ಐದು. ನಿಖರ ಮೊತ್ತಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ.",
+  "loan_repayment": {
+    "info": "Loan repayment amount depends on the principal, the interest rate, and the loan tenure. Please visit the nearest branch or use the EMI calculator at the branch kiosk for an exact figure.",
+    "info_kn": "ಸಾಲ ಮರುಪಾವತಿ ಮೊತ್ತವು ಮೂಲಧನ, ಬಡ್ಡಿ ದರ ಮತ್ತು ಅವಧಿಯನ್ನು ಅವಲಂಬಿಸಿರುತ್ತದೆ. ನಿಖರ ಮೊತ್ತಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಹತ್ತಿರದ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ ಅಥವಾ ಶಾಖೆಯ ಕಿಯೋಸ್ಕ್‌ನಲ್ಲಿ EMI ಲೆಕ್ಕಾಚಾರ ಬಳಸಿ."
+  },
+  "account_procedures": {
+    "name_change":      "To change your name in bank records, submit a written request along with a gazette notification or marriage certificate at your home branch.",
+    "name_change_kn":   "ನಿಮ್ಮ ಹೆಸರನ್ನು ಬ್ಯಾಂಕ್ ದಾಖಲೆಗಳಲ್ಲಿ ಬದಲಾಯಿಸಲು, ಗೆಜೆಟ್ ಅಧಿಸೂಚನೆ ಅಥವಾ ವಿವಾಹ ಪ್ರಮಾಣಪತ್ರದ ಜೊತೆಗೆ ನಿಮ್ಮ ಮೂಲ ಶಾಖೆಯಲ್ಲಿ ಲಿಖಿತ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ.",
+    "mobile_update":    "To update your registered mobile number, visit any branch with your Aadhaar card.",
+    "mobile_update_kn": "ನಿಮ್ಮ ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನವೀಕರಿಸಲು, ಆಧಾರ್ ಕಾರ್ಡ್ ತೆಗೆದುಕೊಂಡು ಯಾವುದೇ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ.",
+    "atm_block":        "To block your ATM card immediately, please call our 24-hour helpline at 1800 XXX XXXX.",
+    "atm_block_kn":     "ನಿಮ್ಮ ATM ಕಾರ್ಡ್ ತಕ್ಷಣ ಬ್ಲಾಕ್ ಮಾಡಲು, ನಮ್ಮ ಇಪ್ಪತ್ತನಾಲ್ಕು ಗಂಟೆ ಸಹಾಯವಾಣಿ ಒಂದು ಎಂಟು ನೂರು ಗೆ ಕರೆ ಮಾಡಿ.",
+    "pin_change":       "To change your ATM PIN, visit any branch ATM and use your current PIN along with the one-time password sent to your registered mobile.",
+    "pin_change_kn":    "ನಿಮ್ಮ ATM ಪಿನ್ ಬದಲಾಯಿಸಲು, ಯಾವುದೇ ಶಾಖೆಯ ATM ಗೆ ಭೇಟಿ ನೀಡಿ. ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಪಿನ್ ಮತ್ತು ನೋಂದಾಯಿತ ಮೊಬೈಲ್‌ಗೆ ಬರುವ OTP ಬಳಸಿ.",
+    "cheque_book":      "To request a cheque book, submit a request at the branch or through net banking. Please allow 5 to 7 working days for delivery.",
+    "cheque_book_kn":   "ಚೆಕ್ ಪುಸ್ತಕ ಪಡೆಯಲು, ಶಾಖೆಯಲ್ಲಿ ಅಥವಾ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ. ತಲುಪಿಸಲು ಐದರಿಂದ ಏಳು ಕಾರ್ಯದಿನಗಳು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ.",
+    "internet_banking": "To activate internet banking, visit the branch with a valid photo identity document and fill in the activation form.",
+    "internet_banking_kn": "ಇಂಟರ್ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಸಕ್ರಿಯಗೊಳಿಸಲು, ಫೋಟೋ ಗುರುತಿನ ದಾಖಲೆ ತೆಗೆದುಕೊಂಡು ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ ಮತ್ತು ಸಕ್ರಿಯಗೊಳಿಸುವ ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ.",
+    "mini_statement":   "To get your last 5 transactions, visit an ATM, use SMS banking by sending BAL to our banking number, or visit any branch.",
+    "mini_statement_kn": "ನಿಮ್ಮ ಕೊನೆಯ ಐದು ವ್ಯವಹಾರಗಳನ್ನು ತಿಳಿಯಲು, ATM ಗೆ ಭೇಟಿ ನೀಡಿ, ಅಥವಾ SMS ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ BAL ಕಳುಹಿಸಿ, ಅಥವಾ ಯಾವುದೇ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ.",
+    "branch_locator":   "To find the nearest branch, please use the branch locator on our website or ask at any branch for directions.",
+    "branch_locator_kn": "ಹತ್ತಿರದ ಶಾಖೆ ಹುಡುಕಲು, ನಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಶಾಖೆ ಪತ್ತೆಕಾರಿ ಬಳಸಿ ಅಥವಾ ಯಾವುದೇ ಶಾಖೆಯಲ್ಲಿ ಕೇಳಿ.",
+    "nominee_update":   "To update your nominee details, fill in Form DA-1 at your home branch in the presence of a witness.",
+    "nominee_update_kn": "ನಾಮಿನಿ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಲು, ಸಾಕ್ಷಿಯ ಸಮಕ್ಷಮದಲ್ಲಿ ನಿಮ್ಮ ಮೂಲ ಶಾಖೆಯಲ್ಲಿ DA-1 ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ.",
+    "general":          "For account-related queries, please visit your nearest branch with a valid photo identity document.",
+    "general_kn":       "ಖಾತೆ ಸಂಬಂಧಿತ ಪ್ರಶ್ನೆಗಳಿಗಾಗಿ, ದಯವಿಟ್ಟು ಫೋಟೋ ಗುರುತಿನ ದಾಖಲೆಯೊಂದಿಗೆ ಹತ್ತಿರದ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ."
+  },
+  "check_balance_note": "Your account balance will be retrieved using the last 4 digits of your account number.",
+  "check_balance_note_kn": "ನಿಮ್ಮ ಖಾತೆಯ ಶಿಲ್ಕು ತಿಳಿಯಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯ ಕೊನೆಯ ನಾಲ್ಕು ಅಂಕಿಗಳನ್ನು ಹೇಳಿ.",
+  "form_submitted_kn": "ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ಮುಂದಿನ ಪ್ರಕ್ರಿಯೆಗಾಗಿ ದಯವಿಟ್ಟು ಹತ್ತಿರದ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ. ಧನ್ಯವಾದಗಳು.",
+  "form_submitted_en": "Your request has been recorded. Please visit the nearest branch to complete the process. Thank you."
+}

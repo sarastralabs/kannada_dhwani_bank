@@ -1,0 +1,12 @@
+# Minimal Python deps for the TTS GPU box host process (api.tts_main on :8001).
+# Parler synthesis runs in isolated .venv-parler — NOT this venv.
+#
+# Setup:  .\scripts\setup_tts_box.ps1
+
+fastapi>=0.110,<1
+uvicorn[standard]>=0.27,<1
+python-dotenv>=1.0,<2
+pydantic>=2.0,<3
+soundfile>=0.12.1
+numpy>=1.24,<2.1
+huggingface_hub>=0.23,<1

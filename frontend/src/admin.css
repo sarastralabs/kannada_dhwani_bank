@@ -1,0 +1,516 @@
+/* ── Staff console ───────────────────────────────────────────────────────── */
+
+.kn,
+[lang="kn"] {
+  font-family: var(--font-kn);
+  font-feature-settings: "kern" 1;
+  letter-spacing: 0.01em;
+}
+
+html:has(.adm-login-scene),
+body:has(.adm-login-scene),
+#root:has(.adm-login-scene) {
+  height: 100%;
+  overflow: hidden;
+}
+
+@keyframes adm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+
+.adm-conn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(232, 238, 245, 0.75);
+}
+
+.adm-conn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8a9bb0;
+}
+
+.adm-conn.is-on .adm-conn-dot {
+  background: #34d399;
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.55);
+}
+
+.adm-conn.is-off {
+  color: #fca5a5;
+}
+
+.adm-conn.is-off .adm-conn-dot {
+  background: #ef4444;
+}
+
+.adm-conn--inline {
+  color: #64748b;
+}
+
+/* ── Main layout ─────────────────────────────────────────────────────────── */
+
+/* ── Alerts ──────────────────────────────────────────────────────────────── */
+
+.adm-alert {
+  margin-bottom: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  animation: adm-fade-in 0.35s ease;
+}
+
+@keyframes adm-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adm-alert--warn {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.adm-alert--error {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+/* ── Hero status ─────────────────────────────────────────────────────────── */
+
+/* ── Pills ───────────────────────────────────────────────────────────────── */
+
+/* ── Stats ───────────────────────────────────────────────────────────────── */
+
+/* ── Grid + cards ────────────────────────────────────────────────────────── */
+
+/* ── Steps ───────────────────────────────────────────────────────────────── */
+
+/* ── Voice tiles ─────────────────────────────────────────────────────────── */
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+
+/* ── Login (full-screen split) ───────────────────────────────────────────── */
+
+.adm-login-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.adm-login-scene.is-ready {
+  opacity: 1;
+}
+
+.adm-login-showcase {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  color: #eef5ff;
+  overflow: hidden;
+  background: linear-gradient(160deg, #061628 0%, #0c2848 45%, #123d66 100%);
+}
+
+.adm-login-showcase-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.adm-login-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: adm-orb-drift 14s ease-in-out infinite alternate;
+}
+
+.adm-login-orb--1 {
+  width: min(50vw, 420px);
+  height: min(50vw, 420px);
+  top: -10%;
+  left: -5%;
+  background: rgba(232, 184, 74, 0.28);
+}
+
+.adm-login-orb--2 {
+  width: min(45vw, 360px);
+  height: min(45vw, 360px);
+  bottom: -5%;
+  right: -5%;
+  background: rgba(56, 130, 190, 0.35);
+  animation-delay: -5s;
+}
+
+@keyframes adm-orb-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(3%, 4%) scale(1.08);
+  }
+}
+
+.adm-login-showcase-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: min(100%, 28rem);
+}
+
+.adm-login-lottie-ring {
+  position: relative;
+  width: min(100%, 240px);
+  height: 190px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.adm-login-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 184, 74, 0.35);
+  animation: adm-ring-expand 3s ease-out infinite;
+}
+
+.adm-login-ring--1 {
+  inset: 18%;
+}
+
+.adm-login-ring--2 {
+  inset: 8%;
+  animation-delay: 1s;
+  border-color: rgba(56, 130, 190, 0.35);
+}
+
+@keyframes adm-ring-expand {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+@keyframes adm-lottie-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.adm-login-lottie {
+  width: min(100%, 200px);
+  max-height: 180px;
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.35));
+  animation: adm-lottie-float 4.5s ease-in-out infinite;
+}
+
+.adm-login-fallback {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #e8b84a, #c99520);
+  color: #071a2e;
+  font-size: 2rem;
+  font-weight: 800;
+  box-shadow: 0 12px 32px rgba(232, 184, 74, 0.35);
+}
+
+.adm-login-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.adm-login-tagline {
+  margin: 0.55rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(232, 184, 74, 0.92);
+}
+
+.adm-login-perks {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.adm-login-perks li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: rgba(232, 238, 245, 0.9);
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.adm-login-perk-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.adm-login-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: #f4f7fb;
+}
+
+.adm-login-panel-inner {
+  width: min(100%, 26rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-login-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.75rem;
+}
+
+.adm-login-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #0c2848, #1a4a7a);
+  color: #e8b84a;
+  font-size: 1.3rem;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(12, 40, 72, 0.2);
+}
+
+.adm-login-head h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  font-weight: 800;
+  color: #0c2848;
+}
+
+.adm-login-head p {
+  margin: 0.15rem 0 0;
+  font-size: 0.92rem;
+  color: #64748b;
+}
+
+.adm-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.adm-login-alert {
+  margin-bottom: 0.75rem;
+}
+
+.adm-login-field {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.adm-login-field-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.adm-login-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.adm-login-input-icon {
+  position: absolute;
+  left: 0.9rem;
+  font-size: 0.95rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.adm-login-field.is-focused .adm-login-input-icon {
+  opacity: 0.85;
+}
+
+.adm-login-input-wrap input {
+  width: 100%;
+  border: 1px solid #d8e0ea;
+  border-radius: 12px;
+  padding: 0.9rem 1rem 0.9rem 2.7rem;
+  font: inherit;
+  font-size: 1rem;
+  color: #0f2744;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.adm-login-input-wrap input:focus {
+  outline: none;
+  border-color: #1a4a7a;
+  box-shadow: 0 0 0 4px rgba(26, 74, 122, 0.1);
+}
+
+.adm-login-submit {
+  position: relative;
+  margin-top: 0.35rem;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 0.95rem 1.25rem;
+  font: inherit;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #071a2e;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f0c95a 0%, #e0b03a 40%, #c99520 100%);
+  box-shadow: 0 8px 24px rgba(201, 149, 32, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.adm-login-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(201, 149, 32, 0.38);
+}
+
+.adm-login-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.adm-login-submit.is-loading .adm-login-submit-text {
+  opacity: 0.75;
+}
+
+.adm-login-spinner {
+  position: absolute;
+  right: 1rem;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(7, 26, 46, 0.2);
+  border-top-color: #071a2e;
+  border-radius: 50%;
+  animation: adm-spin 0.65s linear infinite;
+}
+
+.adm-login-status {
+  margin-top: 1.25rem;
+  text-align: left;
+}
+
+.adm-conn--inline {
+  color: #64748b;
+}
+
+@media (max-width: 900px) {
+  .adm-login-scene {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    overflow-y: auto;
+  }
+
+  .adm-login-showcase {
+    min-height: auto;
+    padding: 1.75rem 1.25rem 1.25rem;
+  }
+
+  .adm-login-lottie-ring {
+    height: 150px;
+  }
+
+  .adm-login-lottie {
+    max-height: 140px;
+  }
+
+  .adm-login-perks {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .adm-login-perks li {
+    flex: 1 1 calc(50% - 0.5rem);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .adm-login-panel {
+    align-items: flex-start;
+    padding: 1.5rem 1.25rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .adm-login-perks {
+    flex-direction: column;
+  }
+
+  .adm-login-perks li {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-login-orb,
+  .adm-login-ring,
+  .adm-login-lottie {
+    animation: none;
+  }
+}
+
+/* ── Responsive (dashboard) ──────────────────────────────────────────────── */
+

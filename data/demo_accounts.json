@@ -1,0 +1,177 @@
+{
+  "1234567890": {
+    "holder_name": "Ramesh Kumar",
+    "holder_name_kn": "ರಾಮೇಶ್ ಕುಮಾರ್",
+    "balance_inr": 45230.50,
+    "account_type": "Savings",
+    "mobile": "9876501234"
+  },
+  "9876543210": {
+    "holder_name": "Anita Rao",
+    "holder_name_kn": "ಅನಿತಾ ರಾವ್",
+    "balance_inr": 12500.00,
+    "account_type": "Savings",
+    "mobile": "9876502345"
+  },
+  "1111222233": {
+    "holder_name": "Suresh Gowda",
+    "holder_name_kn": "ಸುರೇಶ್ ಗೌಡ",
+    "balance_inr": 89340.75,
+    "account_type": "Current",
+    "mobile": "9876503456"
+  },
+  "2222333344": {
+    "holder_name": "Lakshmi Devi",
+    "holder_name_kn": "ಲಕ್ಷ್ಮಿ ದೇವಿ",
+    "balance_inr": 67890.25,
+    "account_type": "Savings",
+    "mobile": "9876504567"
+  },
+  "5555666677": {
+    "holder_name": "Prakash Shetty",
+    "holder_name_kn": "ಪ್ರಕಾಶ್ ಶೆಟ್ಟಿ",
+    "balance_inr": 15250.00,
+    "account_type": "Savings",
+    "mobile": "9876505678"
+  },
+  "8888999900": {
+    "holder_name": "Meena Patil",
+    "holder_name_kn": "ಮೀನಾ ಪಾಟೀಲ್",
+    "balance_inr": 240075.50,
+    "account_type": "Current",
+    "mobile": "9876506789"
+  },
+  "3456789012": {
+    "holder_name": "Vijay Naik",
+    "holder_name_kn": "ವಿಜಯ್ ನಾಯಕ್",
+    "balance_inr": 8750.00,
+    "account_type": "Savings",
+    "mobile": "9876507890"
+  },
+  "4567890123": {
+    "holder_name": "Kavitha Reddy",
+    "holder_name_kn": "ಕವಿತಾ ರೆಡ್ಡಿ",
+    "balance_inr": 125000.00,
+    "account_type": "Savings",
+    "mobile": "9876508901"
+  },
+  "6789012345": {
+    "holder_name": "Mohan Das",
+    "holder_name_kn": "ಮೋಹನ್ ದಾಸ್",
+    "balance_inr": 32400.75,
+    "account_type": "Savings",
+    "mobile": "9876509012"
+  },
+  "7890123456": {
+    "holder_name": "Shantha Kumari",
+    "holder_name_kn": "ಶಾಂತಾ ಕುಮಾರಿ",
+    "balance_inr": 56780.00,
+    "account_type": "Savings",
+    "mobile": "9876510123"
+  },
+  "2345678901": {
+    "holder_name": "Raju Hegde",
+    "holder_name_kn": "ರಾಜು ಹೆಗ್ಡೆ",
+    "balance_inr": 18920.50,
+    "account_type": "Savings",
+    "mobile": "9876511234"
+  },
+  "3344556677": {
+    "holder_name": "Savitha Nayak",
+    "holder_name_kn": "ಸವಿತಾ ನಾಯಕ್",
+    "balance_inr": 73500.25,
+    "account_type": "Current",
+    "mobile": "9876512345"
+  },
+  "4455667788": {
+    "holder_name": "Girish Bhat",
+    "holder_name_kn": "ಗಿರೀಶ್ ಭಟ್",
+    "balance_inr": 9200.00,
+    "account_type": "Savings",
+    "mobile": "9876513456"
+  },
+  "5566778899": {
+    "holder_name": "Pushpa Rani",
+    "holder_name_kn": "ಪುಷ್ಪಾ ರಾಣಿ",
+    "balance_inr": 41600.00,
+    "account_type": "Savings",
+    "mobile": "9876514567"
+  },
+  "6677889900": {
+    "holder_name": "Nagesh Kulkarni",
+    "holder_name_kn": "ನಾಗೇಶ್ ಕುಲಕರ್ಣಿ",
+    "balance_inr": 195000.00,
+    "account_type": "Current",
+    "mobile": "9876515678"
+  },
+  "7788990011": {
+    "holder_name": "Usha Devi",
+    "holder_name_kn": "ಉಷಾ ದೇವಿ",
+    "balance_inr": 28350.75,
+    "account_type": "Savings",
+    "mobile": "9876516789"
+  },
+  "8899001122": {
+    "holder_name": "Ashok Patil",
+    "holder_name_kn": "ಅಶೋಕ್ ಪಾಟೀಲ್",
+    "balance_inr": 6800.00,
+    "account_type": "Savings",
+    "mobile": "9876517890"
+  },
+  "9900112233": {
+    "holder_name": "Rekha Shetty",
+    "holder_name_kn": "ರೇಖಾ ಶೆಟ್ಟಿ",
+    "balance_inr": 84200.50,
+    "account_type": "Savings",
+    "mobile": "9876518901"
+  },
+  "1122334455": {
+    "holder_name": "Dinesh Kamath",
+    "holder_name_kn": "ದಿನೇಶ್ ಕಾಮತ್",
+    "balance_inr": 310500.00,
+    "account_type": "Current",
+    "mobile": "9876519012"
+  },
+  "2233445566": {
+    "holder_name": "Malathi Gowda",
+    "holder_name_kn": "ಮಾಲತಿ ಗೌಡ",
+    "balance_inr": 22100.25,
+    "account_type": "Savings",
+    "mobile": "9876520123"
+  },
+  "3322114455": {
+    "holder_name": "Venkatesh Rao",
+    "holder_name_kn": "ವೆಂಕಟೇಶ್ ರಾವ್",
+    "balance_inr": 51750.00,
+    "account_type": "Savings",
+    "mobile": "9876521234"
+  },
+  "4411223355": {
+    "holder_name": "Geetha Kumari",
+    "holder_name_kn": "ಗೀತಾ ಕುಮಾರಿ",
+    "balance_inr": 14300.00,
+    "account_type": "Savings",
+    "mobile": "9876522345"
+  },
+  "5500113366": {
+    "holder_name": "Manjunath Shetty",
+    "holder_name_kn": "ಮಂಜುನಾಥ್ ಶೆಟ್ಟಿ",
+    "balance_inr": 97800.75,
+    "account_type": "Current",
+    "mobile": "9876523456"
+  },
+  "6611224477": {
+    "holder_name": "Suma Bai",
+    "holder_name_kn": "ಸುಮಾ ಬಾಯಿ",
+    "balance_inr": 33450.00,
+    "account_type": "Savings",
+    "mobile": "9876524567"
+  },
+  "7722335588": {
+    "holder_name": "Krishnamurthy",
+    "holder_name_kn": "ಕೃಷ್ಣಮೂರ್ತಿ",
+    "balance_inr": 5600.50,
+    "account_type": "Savings",
+    "mobile": "9876525678"
+  }
+}

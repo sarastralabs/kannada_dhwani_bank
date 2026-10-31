@@ -1,0 +1,17 @@
+.git
+.env
+.env.*
+!.env.*.example
+**/__pycache__
+.pytest_cache
+.venv*
+frontend
+docs
+tests
+*.log
+*.csv
+data/*.db
+data/history_audio
+data/runtime_settings.json
+data/cloud_status.json
+data/form_submissions.jsonl

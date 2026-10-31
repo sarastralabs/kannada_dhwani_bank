@@ -1,0 +1,600 @@
+{
+  "disclaimer_kn": "ಇದು ಪ್ರಾತ್ಯಕ್ಷಿಕೆ ಅರ್ಜಿ ಮಾತ್ರ — ಅಧಿಕೃತ ಬ್ಯಾಂಕ್ ದಾಖಲೆ ಅಲ್ಲ. ನಿಜವಾದ ಖಾತೆ ವಹಿವಾಟು ನಡೆಯುವುದಿಲ್ಲ.",
+  "disclaimer_en": "Demo form only — not an official bank document. No live account transaction. Fields follow common Indian branch / public-sector bank slips (withdrawal, deposit, AOF, loan, RTGS-NEFT, cheque book, ATM card, FD, customer request).",
+  "intent_map": {
+    "check_balance": "balance_inquiry",
+    "withdraw_money": "cash_withdrawal",
+    "deposit_money": "cash_deposit",
+    "open_account": "open_account",
+    "apply_loan": "apply_loan"
+  },
+  "forms": [
+    {
+      "id": "balance_inquiry",
+      "category": "inquiry",
+      "source_note": "Demo balance lookup — account number then simulated core banking response",
+      "title_kn": "ಖಾತೆಯ ಶಿಲ್ಕು ಪರಿಶೀಲನೆ",
+      "title_en": "Balance inquiry",
+      "description_kn": "ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ — ಲಭ್ಯವಿರುವ ಶಿಲ್ಕನ್ನು ತಿಳಿಸುತ್ತೇವೆ.",
+      "description_en": "Provide your account number to hear your available balance.",
+      "fields": [
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆಯ ಕೊನೆಯ 4 ಅಂಕಿಗಳು",
+          "label_en": "Last 4 digits of account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯ ಕೊನೆಯ ನಾಲ್ಕು ಅಂಕಿಗಳನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "cash_withdrawal",
+      "category": "counter_slip",
+      "source_note": "Cash withdrawal slip — standard branch counter form (e.g. Bank of Maharashtra / PSB style)",
+      "title_kn": "ನಗದು ಹಿಂಪಡೆಯುವ ಚೀಟಿ",
+      "title_en": "Cash withdrawal slip",
+      "description_kn": "ಖಾತೆಯಿಂದ ನಗದು ಹಿಂಪಡೆಯಲು ಬ್ಯಾಂಕ್ ಶಾಖೆಯಲ್ಲಿ ಬಳಸುವ ಚೀಟಿ.",
+      "description_en": "Branch counter slip to withdraw cash from your account.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "amount",
+          "label_kn": "ಮೊತ್ತ (ರೂ.)",
+          "label_en": "Amount (₹)",
+          "prompt_kn": "ಹಿಂಪಡೆಯುವ ಮೊತ್ತವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        },
+        {
+          "id": "purpose",
+          "label_kn": "ಉದ್ದೇಶ (ಐಚ್ಛಿಕ)",
+          "label_en": "Purpose (optional)",
+          "prompt_kn": "ಉದ್ದೇಶವನ್ನು ಹೇಳಿ. ಇಲ್ಲದಿದ್ದರೆ ಬಿಟ್ಟುಬಿಡಿ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "cash_deposit",
+      "category": "counter_slip",
+      "source_note": "Cash / cheque deposit slip — standard branch counter form",
+      "title_kn": "ನಗದು / ಚೆಕ್ ಠೇವಣಿ ಚೀಟಿ",
+      "title_en": "Cash / cheque deposit slip",
+      "description_kn": "ಖಾತೆಗೆ ನಗದು ಅಥವಾ ಚೆಕ್ ಠೇವಣಿ ಮಾಡಲು ಬ್ಯಾಂಕ್ ಶಾಖೆಯಲ್ಲಿ ಬಳಸುವ ಚೀಟಿ.",
+      "description_en": "Branch slip to deposit cash or cheque into an account.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "amount",
+          "label_kn": "ಮೊತ್ತ (ರೂ.)",
+          "label_en": "Amount (₹)",
+          "prompt_kn": "ಠೇವಣಿ ಮೊತ್ತವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "deposit_mode",
+          "label_kn": "ಠೇವಣಿ ವಿಧಾನ",
+          "label_en": "Deposit mode",
+          "prompt_kn": "ನಗದು ಅಥವಾ ಚೆಕ್ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "open_account",
+      "category": "account",
+      "source_note": "Simplified individual Account Opening Form (AOF) — common fields from PSB / Axis / Indian Bank individual AOF (name, DOB, address, mobile, account type). PAN omitted — alphanumeric codes are unreliable over voice/STT; collected in-branch instead. Full KYC annexures omitted for voice demo.",
+      "title_kn": "ವೈಯಕ್ತಿಕ ಖಾತೆ ತೆರೆಯುವ ಅರ್ಜಿ",
+      "title_en": "Individual account opening form",
+      "description_kn": "ಹೊಸ ಉಳಿತಾಯ / ಚಾಲ್ತಿ ಖಾತೆ ತೆರೆಯಲು ಅಗತ್ಯವಿರುವ ಮೂಲ ವಿವರಗಳು.",
+      "description_en": "Core fields from a resident individual account opening form (Savings / Current).",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಪೂರ್ಣ ಹೆಸರು",
+          "label_en": "Full name (as per KYC)",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label_kn": "ಜನ್ಮ ದಿನಾಂಕ",
+          "label_en": "Date of birth",
+          "prompt_kn": "ನಿಮ್ಮ ಜನ್ಮ ದಿನಾಂಕವನ್ನು ಹೇಳಿ — ದಿನ, ತಿಂಗಳು, ವರ್ಷ",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "address",
+          "label_kn": "ವಾಸದ ವಿಳಾಸ",
+          "label_en": "Residential address",
+          "prompt_kn": "ನಿಮ್ಮ ಪೂರ್ಣ ವಾಸದ ವಿಳಾಸವನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "mobile_number",
+          "label_kn": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+          "label_en": "Mobile number",
+          "prompt_kn": "ನಿಮ್ಮ ಹತ್ತು ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "account_type",
+          "label_kn": "ಖಾತೆ ವಿಧ",
+          "label_en": "Account type",
+          "prompt_kn": "ಉಳಿತಾಯ, ಚಾಲ್ತಿ ಅಥವಾ ವೇತನ ಖಾತೆ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "apply_loan",
+      "category": "loan",
+      "source_note": "Simplified retail loan application — fields common across home / personal / education / vehicle loan forms published by PSBs.",
+      "title_kn": "ಚಿಲ್ಲರೆ ಸಾಲ ಅರ್ಜಿ",
+      "title_en": "Retail loan application",
+      "description_kn": "ಗೃಹ / ವೈಯಕ್ತಿಕ / ಶಿಕ್ಷಣ / ವಾಹನ ಸಾಲಕ್ಕೆ ಅಗತ್ಯವಿರುವ ಮೂಲ ವಿವರಗಳು.",
+      "description_en": "Core retail loan application fields (type, amount, income, contact).",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಅರ್ಜಿದಾರರ ಹೆಸರು",
+          "label_en": "Applicant name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "mobile_number",
+          "label_kn": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+          "label_en": "Mobile number",
+          "prompt_kn": "ನಿಮ್ಮ ಹತ್ತು ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "loan_type",
+          "label_kn": "ಸಾಲದ ವಿಧ",
+          "label_en": "Loan type",
+          "prompt_kn": "ಗೃಹ ಸಾಲ, ವೈಯಕ್ತಿಕ ಸಾಲ, ಶಿಕ್ಷಣ ಸಾಲ ಅಥವಾ ವಾಹನ ಸಾಲ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "loan_amount",
+          "label_kn": "ಸಾಲದ ಮೊತ್ತ (ರೂ.)",
+          "label_en": "Loan amount (₹)",
+          "prompt_kn": "ನಿಮಗೆ ಬೇಕಾದ ಸಾಲದ ಮೊತ್ತವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "income",
+          "label_kn": "ವಾರ್ಷಿಕ ಆದಾಯ (ರೂ.)",
+          "label_en": "Annual income (₹)",
+          "prompt_kn": "ನಿಮ್ಮ ವಾರ್ಷಿಕ ಆದಾಯವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "rtgs_neft",
+      "category": "transfer",
+      "source_note": "RTGS / NEFT application form — remitter + beneficiary + IFSC + amount (Axis / BoM / UCO style)",
+      "title_kn": "RTGS / NEFT ವರ್ಗಾವಣೆ ಅರ್ಜಿ",
+      "title_en": "RTGS / NEFT transfer form",
+      "description_kn": "ಇನ್ನೊಂದು ಖಾತೆಗೆ ಹಣ ವರ್ಗಾವಣೆ ಮಾಡಲು ಬ್ಯಾಂಕ್ ಶಾಖೆಯಲ್ಲಿ ಭರ್ತಿ ಮಾಡುವ ಅರ್ಜಿ.",
+      "description_en": "Branch form to transfer money to another bank account via RTGS or NEFT.",
+      "fields": [
+        {
+          "id": "remitter_name",
+          "label_kn": "ಕಳುಹಿಸುವವರ ಹೆಸರು",
+          "label_en": "Remitter (sender) name",
+          "prompt_kn": "ಹಣ ಕಳುಹಿಸುವವರ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "remitter_account",
+          "label_kn": "ಕಳುಹಿಸುವ ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Remitter account number",
+          "prompt_kn": "ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "beneficiary_name",
+          "label_kn": "ಸ್ವೀಕರಿಸುವವರ ಹೆಸರು",
+          "label_en": "Beneficiary name",
+          "prompt_kn": "ಹಣ ಸ್ವೀಕರಿಸುವವರ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "beneficiary_account",
+          "label_kn": "ಸ್ವೀಕರಿಸುವ ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Beneficiary account number",
+          "prompt_kn": "ಸ್ವೀಕರಿಸುವವರ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "beneficiary_ifsc",
+          "label_kn": "IFSC ಕೋಡ್",
+          "label_en": "Beneficiary IFSC code",
+          "prompt_kn": "ಸ್ವೀಕರಿಸುವ ಬ್ಯಾಂಕ್‌ನ IFSC ಕೋಡ್ ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "amount",
+          "label_kn": "ಮೊತ್ತ (ರೂ.)",
+          "label_en": "Amount (₹)",
+          "prompt_kn": "ವರ್ಗಾವಣೆ ಮೊತ್ತವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "remarks",
+          "label_kn": "ಟಿಪ್ಪಣಿ (ಐಚ್ಛಿಕ)",
+          "label_en": "Remarks (optional)",
+          "prompt_kn": "ಯಾವುದಾದರೂ ಟಿಪ್ಪಣಿ ಹೇಳಿ. ಇಲ್ಲದಿದ್ದರೆ ಬಿಟ್ಟುಬಿಡಿ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "cheque_book_request",
+      "category": "service",
+      "source_note": "Cheque book request — common customer service form (BoM / Indian Bank downloads)",
+      "title_kn": "ಚೆಕ್ ಬುಕ್ ವಿನಂತಿ",
+      "title_en": "Cheque book request",
+      "description_kn": "ಹೊಸ ಚೆಕ್ ಪುಸ್ತಕ ಬೇಕಾದಾಗ ಬ್ಯಾಂಕ್ ಶಾಖೆಗೆ ಸಲ್ಲಿಸುವ ವಿನಂತಿ.",
+      "description_en": "Request a new cheque book from your branch.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "number_of_leaves",
+          "label_kn": "ಹಾಳೆಗಳ ಸಂಖ್ಯೆ",
+          "label_en": "Number of leaves",
+          "prompt_kn": "ಹತ್ತು, ಇಪ್ಪತ್ತೈದು ಅಥವಾ ಐವತ್ತು ಹಾಳೆಗಳ ಚೆಕ್ ಪುಸ್ತಕ ಬೇಕೇ ಎಂದು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "atm_debit_card",
+      "category": "service",
+      "source_note": "ATM / Debit card application — common downloadable form across PSBs",
+      "title_kn": "ಎಟಿಎಂ / ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಅರ್ಜಿ",
+      "title_en": "ATM / Debit card application",
+      "description_kn": "ಹೊಸ ಎಟಿಎಂ ಅಥವಾ ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಪಡೆಯಲು ಸಲ್ಲಿಸುವ ಅರ್ಜಿ.",
+      "description_en": "Apply for a new ATM or debit card linked to your account.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "mobile_number",
+          "label_kn": "ನೋಂದಾಯಿತ ಮೊಬೈಲ್",
+          "label_en": "Registered mobile number",
+          "prompt_kn": "ನಿಮ್ಮ ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "card_type",
+          "label_kn": "ಕಾರ್ಡ್ ವಿಧ",
+          "label_en": "Card type",
+          "prompt_kn": "ಎಟಿಎಂ ಕಾರ್ಡ್ ಅಥವಾ ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "fixed_deposit",
+      "category": "deposit",
+      "source_note": "Term / Fixed Deposit opening — common FD form fields (amount, tenure, payout)",
+      "title_kn": "ಸ್ಥಿರ ಠೇವಣಿ (FD) ಅರ್ಜಿ",
+      "title_en": "Fixed deposit (term deposit) form",
+      "description_kn": "ಹೊಸ ಸ್ಥಿರ ಠೇವಣಿ ತೆರೆಯಲು ಅಗತ್ಯವಿರುವ ವಿವರಗಳು.",
+      "description_en": "Open a fixed / term deposit with amount, tenure, and interest payout.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಸಂಬಂಧಿತ ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Linked account number",
+          "prompt_kn": "ನಿಮ್ಮ ಉಳಿತಾಯ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "fd_amount",
+          "label_kn": "ಠೇವಣಿ ಮೊತ್ತ (ರೂ.)",
+          "label_en": "Deposit amount (₹)",
+          "prompt_kn": "ಸ್ಥಿರ ಠೇವಣಿ ಮೊತ್ತವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "tenure",
+          "label_kn": "ಅವಧಿ",
+          "label_en": "Tenure",
+          "prompt_kn": "ಅವಧಿ ಹೇಳಿ — ಉದಾಹರಣೆಗೆ ಒಂದು ವರ್ಷ, ಮೂರು ವರ್ಷ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "interest_payout",
+          "label_kn": "ಬಡ್ಡಿ ಪಾವತಿ ವಿಧಾನ",
+          "label_en": "Interest payout",
+          "prompt_kn": "ಮಾಸಿಕ, ತ್ರೈಮಾಸಿಕ ಅಥವಾ ಅವಧಿ ಪೂರ್ಣಗೊಂಡಾಗ ಎಂದು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "mobile_update",
+      "category": "service",
+      "source_note": "Customer request — registered mobile update (common Customer Request Form use-case; matches bank_info mobile_update procedure)",
+      "title_kn": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನವೀಕರಣ",
+      "title_en": "Registered mobile number update",
+      "description_kn": "ಬ್ಯಾಂಕ್‌ನಲ್ಲಿ ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಬದಲಾಯಿಸುವ ವಿನಂತಿ.",
+      "description_en": "Customer request to update the mobile number registered with the bank.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "old_mobile",
+          "label_kn": "ಹಳೆಯ ಮೊಬೈಲ್",
+          "label_en": "Existing registered mobile",
+          "prompt_kn": "ಈಗ ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "new_mobile",
+          "label_kn": "ಹೊಸ ಮೊಬೈಲ್",
+          "label_en": "New mobile number",
+          "prompt_kn": "ಹೊಸ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    },
+    {
+      "id": "stop_cheque",
+      "category": "service",
+      "source_note": "Stop payment of cheque — common customer instruction form at branches",
+      "title_kn": "ಚೆಕ್ ನಿಲ್ಲಿಸುವ ವಿನಂತಿ",
+      "title_en": "Stop payment of cheque",
+      "description_kn": "ನೀವು ನೀಡಿದ ಚೆಕ್‌ನ ಪಾವತಿಯನ್ನು ನಿಲ್ಲಿಸಲು ಬ್ಯಾಂಕ್ ಶಾಖೆಗೆ ಸಲ್ಲಿಸುವ ವಿನಂತಿ.",
+      "description_en": "Instruct the bank to stop payment on a cheque you issued.",
+      "fields": [
+        {
+          "id": "full_name",
+          "label_kn": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "label_en": "Account holder name",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "account_number",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "label_en": "Account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "cheque_number",
+          "label_kn": "ಚೆಕ್ ಸಂಖ್ಯೆ",
+          "label_en": "Cheque number",
+          "prompt_kn": "ನಿಲ್ಲಿಸಬೇಕಾದ ಚೆಕ್ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "amount",
+          "label_kn": "ಚೆಕ್ ಮೊತ್ತ (ರೂ.)",
+          "label_en": "Cheque amount (₹)",
+          "prompt_kn": "ಚೆಕ್‌ನ ಮೊತ್ತವನ್ನು ಹೇಳಿ",
+          "type": "amount",
+          "required": true
+        },
+        {
+          "id": "reason",
+          "label_kn": "ಕಾರಣ",
+          "label_en": "Reason",
+          "prompt_kn": "ಚೆಕ್ ನಿಲ್ಲಿಸುವ ಕಾರಣವನ್ನು ಹೇಳಿ",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date",
+          "label_kn": "ದಿನಾಂಕ",
+          "label_en": "Date",
+          "prompt_kn": "",
+          "type": "date",
+          "required": true,
+          "auto": "today"
+        }
+      ]
+    }
+  ]
+}

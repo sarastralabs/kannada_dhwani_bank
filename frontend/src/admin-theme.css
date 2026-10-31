@@ -1,0 +1,272 @@
+/*
+ * Dhwani staff console — indigo / saffron / teal restyle for port 5174.
+ * Loaded after admin.css and admin-console.css; relies on the tokens in theme.css.
+ */
+
+/* ── Shell ─────────────────────────────────────────────────────────────── */
+
+.ac-shell {
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(255, 166, 43, 0.1) 0%, transparent 38%),
+    radial-gradient(ellipse at 0% 100%, rgba(91, 78, 224, 0.08) 0%, transparent 40%),
+    var(--ac-bg);
+}
+
+.ac-sidebar {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(91, 78, 224, 0.5) 0%, transparent 55%),
+    linear-gradient(180deg, #1b1450 0%, #120d33 100%);
+  color: #d9d4f5;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ac-brand-logo {
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fff3dc, #ffd08a);
+  box-shadow: 0 6px 18px rgba(255, 166, 43, 0.35);
+}
+
+.ac-brand-logo {
+  position: relative;
+}
+
+.ac-brand-logo img {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  left: -21px;
+  top: -12px;
+  max-width: none;
+}
+
+.ac-brand span:not(.ac-brand-logo) {
+  color: #ffc46b;
+}
+
+.ac-nav-item {
+  color: #cbc5ee;
+  border-radius: 12px;
+}
+
+.ac-nav-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.ac-nav-item.is-active {
+  background: linear-gradient(90deg, rgba(255, 166, 43, 0.22), rgba(255, 166, 43, 0.06));
+  box-shadow: inset 3px 0 0 var(--dh-saffron);
+}
+
+.ac-nav-item.is-active .ac-icon {
+  color: var(--dh-saffron);
+}
+
+.ac-topbar {
+  background: rgba(247, 243, 236, 0.88);
+}
+
+.ac-topbar-titles h1 {
+  color: var(--dh-indigo-900);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+
+.ac-btn--gold {
+  background: linear-gradient(145deg, #ffbd59, var(--dh-saffron-deep));
+  color: #2a1700;
+  box-shadow: 0 6px 18px rgba(224, 130, 11, 0.32);
+}
+
+.ac-btn--outline:hover:not(:disabled) {
+  border-color: var(--dh-indigo-500);
+  background: #f3f1ff;
+}
+
+.ac-btn--ghost {
+  color: var(--dh-indigo-700);
+}
+
+.ac-btn--ghost:hover:not(:disabled) {
+  background: rgba(91, 78, 224, 0.08);
+}
+
+/* ── Cards ─────────────────────────────────────────────────────────────── */
+
+.ac-card {
+  border-radius: 18px;
+  border-color: #ebe5f4;
+}
+
+.ac-card-head {
+  border-bottom-color: #f0ebf7;
+}
+
+/* ── Badges & pills ────────────────────────────────────────────────────── */
+
+.ac-badge--blue { background: #eeedff; color: #4338ca; border-color: #dcd9ff; }
+.ac-badge--green { background: #e6f8f5; color: #0b7a6c; border-color: #c4eee7; }
+.ac-badge--violet { background: #f4ecff; color: #7b2fd1; border-color: #e6d5ff; }
+.ac-badge--teal { background: #e3f8f6; color: #0f766e; border-color: #bfeee9; }
+.ac-badge--gold { background: #fff4e0; color: #a8570a; border-color: #ffdca0; }
+.ac-badge--amber { background: #fff1e0; color: #b45309; border-color: #ffd6a3; }
+.ac-badge--red { background: #ffeef2; color: #c3194a; border-color: #ffd0dc; }
+
+.ac-pill--live {
+  color: #0b7a6c;
+  border-color: #bff0e8;
+  background: #e8faf7;
+}
+
+.ac-pill--live .ac-pill-dot {
+  background: var(--dh-teal);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.22);
+}
+
+.ac-pill--busy {
+  color: var(--dh-indigo-700);
+  border-color: #d9d5ff;
+  background: #f1efff;
+}
+
+.ac-pill--busy .ac-pill-dot {
+  background: var(--dh-indigo-500);
+}
+
+.ac-conn.is-on .ac-conn-dot {
+  background: var(--dh-teal);
+  box-shadow: 0 0 10px rgba(20, 184, 166, 0.6);
+}
+
+.ac-conf-fill {
+  background: linear-gradient(90deg, var(--dh-indigo-500), var(--dh-teal));
+}
+
+.ac-user-avatar {
+  background: linear-gradient(145deg, #ffbd59, var(--dh-saffron-deep));
+  color: #2a1700;
+}
+
+/* ── Login (admin.css) ─────────────────────────────────────────────────── */
+
+.adm-login-showcase {
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255, 166, 43, 0.22) 0%, transparent 45%),
+    linear-gradient(160deg, #120d33 0%, #2a1f7a 55%, #3a2f9e 100%);
+}
+
+.adm-login-orb--1 {
+  background: rgba(255, 166, 43, 0.3);
+}
+
+.adm-login-orb--2 {
+  background: rgba(91, 78, 224, 0.45);
+}
+
+.adm-login-lottie-ring {
+  height: 240px;
+  margin-bottom: 1.25rem;
+}
+
+.adm-login-panel {
+  background: #f7f3ec;
+}
+
+.adm-login-mascot {
+  width: auto;
+  height: 210px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px rgba(8, 4, 40, 0.45));
+  animation: dh-hop 1.6s ease-in-out infinite;
+  transform-origin: 50% 94%;
+  user-select: none;
+}
+
+.adm-login-tagline {
+  color: #ffc46b;
+}
+
+.adm-login-badge {
+  background: linear-gradient(145deg, #3a2f9e, #1b1450);
+  color: var(--dh-saffron);
+}
+
+.adm-login-submit,
+button.adm-login-submit {
+  background: linear-gradient(135deg, #ffbd59 0%, #ffa62b 45%, #e0820b 100%);
+  color: #2a1700;
+  box-shadow: 0 8px 24px rgba(224, 130, 11, 0.32);
+}
+
+.adm-login-input-wrap:focus-within {
+  border-color: var(--dh-indigo-500);
+  box-shadow: 0 0 0 4px rgba(91, 78, 224, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-login-mascot {
+    animation: none;
+  }
+}
+
+/* ── System health + chart ─────────────────────────────────────────────── */
+
+.ac-health {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.ac-health li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #eee8f5;
+  font-size: 0.92rem;
+}
+
+.ac-health li:last-child {
+  border-bottom: 0;
+}
+
+.ac-health small {
+  color: var(--ac-muted);
+  margin-left: 0.35rem;
+}
+
+.ac-chart {
+  margin: 0;
+}
+
+.ac-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ac-chart-bar {
+  fill: url(#none);
+  fill: var(--dh-indigo-500);
+}
+
+.ac-chart-val {
+  font-size: 8px;
+  font-weight: 700;
+  fill: var(--dh-indigo-900);
+}
+
+.ac-chart-tick {
+  font-size: 7px;
+  fill: var(--ac-muted);
+}
+
+.ac-chart figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+}
