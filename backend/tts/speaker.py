@@ -36,8 +36,8 @@ import warnings
 
 import numpy as np
 import soundfile as sf
-import torch
-from transformers import AutoTokenizer, VitsModel
+# torch / transformers are imported inside the MMS code below, so the text helpers in this
+# file (prepare_kannada_for_tts) work on cloud-only installs that ship neither.
 
 _DEFAULT_MODEL_ID = "facebook/mms-tts-kan"
 
@@ -64,6 +64,8 @@ _SENTENCE_SPLIT_RE = re.compile(r'(?<=[.!?])\s+')
 def _detect_device() -> str:
     """Return 'cuda' if a GPU is available, else 'cpu'."""
     try:
+        import torch
+
         return "cuda" if torch.cuda.is_available() else "cpu"
     except Exception:
         return "cpu"
@@ -149,7 +151,9 @@ class KannadaSpeaker:
         self._model, self._tokenizer = self._load_model()
         self.sample_rate: int = self._model.config.sampling_rate
 
-    def _load_model(self) -> tuple[VitsModel, AutoTokenizer]:
+    def _load_model(self):
+        from transformers import AutoTokenizer, VitsModel
+
         try:
             model = VitsModel.from_pretrained(self._model_id).to(self._device)
             model.eval()
@@ -176,6 +180,8 @@ class KannadaSpeaker:
         normalised = _normalise_digits(kannada_text)
         inputs = self._tokenizer(normalised, return_tensors="pt")
         input_ids = inputs["input_ids"].long().to(self._device)
+        import torch
+
         with torch.no_grad():
             output = self._model(input_ids=input_ids).waveform
         return output.squeeze().cpu().numpy().astype(np.float32)
