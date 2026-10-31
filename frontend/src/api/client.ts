@@ -1061,6 +1061,7 @@ export interface SystemStatus {
   database: { kind: "mongodb" | "sqlite"; ok: boolean };
   cloud_key_set: boolean;
   default_admin_password: boolean;
+  limits: { enabled: boolean; daily_used: number; daily_cap: number; per_min: number; blocked_recent: number };
   recent: {
     window_s: number;
     requests: number;

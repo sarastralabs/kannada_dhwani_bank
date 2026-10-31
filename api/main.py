@@ -22,6 +22,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from api.cors_config import cors_middleware_kwargs
+from api.ratelimit import RateLimitMiddleware
 
 from backend.cuda_runtime import ensure_compatible_cudnn
 
@@ -41,7 +42,8 @@ os.environ.setdefault("BANK_TTS_SPEAKER", "Suresh")
 
 app = FastAPI(title="Kannada Voice Banking API", version="1.0.0")
 
-app.add_middleware(CORSMiddleware, **cors_middleware_kwargs())
+app.add_middleware(RateLimitMiddleware)
+app.add_middleware(CORSMiddleware, **cors_middleware_kwargs())  # added last = outermost, so 429s carry CORS headers
 
 
 @app.exception_handler(Exception)
@@ -65,9 +67,25 @@ app.include_router(admin.router, prefix="/api")
 app.include_router(insights.router, prefix="/api")
 
 
+def autostart_kiosk() -> bool:
+    """Open the lobby on boot when BANK_KIOSK_AUTOSTART=1.
+
+    Kiosk state lives in memory, so every restart (or Render waking from sleep) would
+    otherwise leave the customer screen on "counter closed" until staff press Open lobby.
+    """
+    if os.environ.get("BANK_KIOSK_AUTOSTART", "0").strip().lower() not in {"1", "true", "yes", "on"}:
+        return False
+    from api import kiosk_state
+
+    kiosk_state.start_kiosk()
+    print("[startup] kiosk lobby opened (BANK_KIOSK_AUTOSTART)", flush=True)
+    return True
+
+
 @app.on_event("startup")
 def _startup() -> None:
     init_db()
+    autostart_kiosk()
     try:
         from backend.db.customers import init_customer_db, seed_from_demo, store_mode
 

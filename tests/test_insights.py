@@ -172,3 +172,18 @@ def test_real_outage_still_backs_off(monkeypatch):
     monkeypatch.setenv("BANK_CLOUD_PROVIDER", "sarvam")
     cloud.record_error("tts", CloudError("server", "Sarvam service error 503"))
     assert cloud.blocked_reason("tts") is not None
+
+
+def test_autostart_opens_lobby_only_when_enabled(monkeypatch):
+    from api import kiosk_state, main
+
+    monkeypatch.setattr(kiosk_state, "_persist_session", lambda event: None)
+    monkeypatch.delenv("BANK_KIOSK_AUTOSTART", raising=False)
+    kiosk_state.stop_kiosk()
+    assert main.autostart_kiosk() is False
+    assert kiosk_state.get_status_lite()["running"] is False
+
+    monkeypatch.setenv("BANK_KIOSK_AUTOSTART", "1")
+    assert main.autostart_kiosk() is True
+    assert kiosk_state.get_status_lite()["running"] is True
+    kiosk_state.stop_kiosk()

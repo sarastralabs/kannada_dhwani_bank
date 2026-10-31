@@ -21,6 +21,14 @@ services:
         value: "0"
       - key: BANK_CUSTOMER_STORE
         value: sqlite
+      # Open the lobby automatically after every restart / wake-up.
+      - key: BANK_KIOSK_AUTOSTART
+        value: "1"
+      # Protect Sarvam credits: per-IP limit and a daily cap on speech calls.
+      - key: BANK_RATE_PER_MIN
+        value: "60"
+      - key: BANK_DAILY_CAP
+        value: "3000"
       # Staff console
       - key: BANK_ADMIN_USER
         value: admin

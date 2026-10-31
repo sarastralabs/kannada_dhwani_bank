@@ -14,6 +14,12 @@ const STAGE_LABEL: Record<string, { en: string; kn: string }> = {
   tts: { en: "Speaking", kn: "ಮಾತನಾಡುವುದು" },
 };
 
+function capTone(l: SystemStatus["limits"]): "green" | "amber" | "red" | "slate" {
+  if (!l.enabled || l.daily_cap <= 0) return "slate";
+  const used = l.daily_used / l.daily_cap;
+  return used >= 1 ? "red" : used >= 0.8 ? "amber" : "green";
+}
+
 /** Is each stage loaded, and which engine answers it? Replaces guessing from "please say again". */
 export function SystemStatusCard({ apiOnline }: { apiOnline: boolean | null }) {
   const [status, setStatus] = useState<SystemStatus | null>(null);
@@ -74,6 +80,14 @@ export function SystemStatusCard({ apiOnline }: { apiOnline: boolean | null }) {
             </li>
           ))}
           <li>
+            <span>
+              Voice calls today <small className="kn">ಇಂದಿನ ಧ್ವನಿ ಕರೆಗಳು</small>
+            </span>
+            <Badge tone={capTone(status.limits)}>
+              {status.limits.daily_cap > 0 ? `${status.limits.daily_used} / ${status.limits.daily_cap}` : `${status.limits.daily_used} (no cap)`}
+            </Badge>
+          </li>
+          <li>
             <span>Database</span>
             <Badge tone={status.database.ok ? "green" : "red"}>
               {status.database.kind === "mongodb" ? "MongoDB" : "SQLite"}
@@ -84,6 +98,11 @@ export function SystemStatusCard({ apiOnline }: { apiOnline: boolean | null }) {
       )}
       {status?.default_admin_password && (
         <ErrorNote message="The admin password is still the default (bank@123). Set BANK_ADMIN_PASS before anyone else can reach this console." />
+      )}
+      {status && status.limits.blocked_recent > 0 && (
+        <ErrorNote
+          message={`${status.limits.blocked_recent} request(s) were blocked by the rate limit in the last 15 min. If customers are affected, raise BANK_RATE_PER_MIN or BANK_DAILY_CAP.`}
+        />
       )}
       {status && status.recent.service_failures > 0 && (
         <ErrorNote

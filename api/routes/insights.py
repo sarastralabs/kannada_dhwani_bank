@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import Response
 
-from api import admin_auth, system_status
+from api import admin_auth, ratelimit, system_status
 
 router = APIRouter(tags=["insights"])
 
@@ -54,6 +54,7 @@ def admin_system(_admin: dict = Depends(admin_auth.require_admin)) -> dict:
         # The shipped default is public in the repo, so it must not stay in use.
         "default_admin_password": admin_auth._credentials()[1] == "bank@123",
         "recent": system_status.snapshot(),
+        "limits": ratelimit.snapshot(),
     }
 
 
