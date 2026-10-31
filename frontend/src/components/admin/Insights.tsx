@@ -40,7 +40,10 @@ export function SystemStatusCard({ apiOnline }: { apiOnline: boolean | null }) {
     };
   }, [apiOnline]);
 
-  const healthy = status ? status.pipeline_ready && status.recent.healthy && status.database.ok : null;
+  // With every stage on Sarvam there is no local model to load, so "not loaded" is normal.
+  const allCloud = status ? Object.values(status.stages).every((st) => st.provider === "sarvam") : false;
+  const pipelineOk = status ? status.pipeline_ready || allCloud : false;
+  const healthy = status ? pipelineOk && status.recent.healthy && status.database.ok : null;
 
   return (
     <Card
@@ -56,8 +59,8 @@ export function SystemStatusCard({ apiOnline }: { apiOnline: boolean | null }) {
         <ul className="ac-health">
           <li>
             <span>Voice pipeline</span>
-            <Badge tone={status.pipeline_ready ? "green" : "amber"}>
-              {status.pipeline_ready ? "Loaded" : "Loads on first request"}
+            <Badge tone={pipelineOk ? "green" : "amber"}>
+              {status.pipeline_ready ? "Loaded" : allCloud ? "Cloud — no local models" : "Loads on first request"}
             </Badge>
           </li>
           {Object.entries(status.stages).map(([key, st]) => (
