@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { levelToFrame, MOUTH_FRAMES, onMouthLevel } from "../utils/lipsync";
 
 export type MascotMood =
   | "waiting"
@@ -23,6 +24,12 @@ const POSE_FOR_MOOD: Record<MascotMood, Pose> = {
   happy: "happy",
   confused: "confused",
 };
+
+/** Poses with open eyes get a blink layer (the happy pose already has them shut). */
+const BLINK_POSES: ReadonlySet<Pose> = new Set<Pose>(["greeting", "listening", "thinking", "speaking", "confused"]);
+/** Poses whose mouth moves with the voice. */
+const TALKING_POSE: Pose = "speaking";
+const MOUTHS = Array.from({ length: MOUTH_FRAMES }, (_, i) => i);
 
 interface AgentMascotProps {
   mood?: MascotMood;
@@ -55,6 +62,8 @@ export function AgentMascot({ mood = "waiting", className = "" }: AgentMascotPro
   }, [mood]);
 
   const pose = POSE_FOR_MOOD[mood];
+  const blinking = useBlink();
+  const mouth = useMouthFrame(mood === "speaking");
 
   return (
     <div
@@ -73,14 +82,27 @@ export function AgentMascot({ mood = "waiting", className = "" }: AgentMascotPro
           <span className="mascot-shadow" />
           <div className="mascot-body-group">
             {POSES.map((p) => (
-              <img
-                key={p}
-                className={`mascot-pose${p === pose ? " is-active" : ""}`}
-                src={`/mascot/${p}.png`}
-                alt=""
-                draggable={false}
-                decoding="async"
-              />
+              <div key={p} className={`mascot-pose${p === pose ? " is-active" : ""}`}>
+                <img className="mascot-pose-img" src={`/mascot/${p}.png`} alt="" draggable={false} decoding="async" />
+                {BLINK_POSES.has(p) && (
+                  <img
+                    className={`mascot-layer${blinking && p === pose ? " is-on" : ""}`}
+                    src={`/mascot/blink-${p}.png`}
+                    alt=""
+                    draggable={false}
+                  />
+                )}
+                {p === TALKING_POSE &&
+                  MOUTHS.map((i) => (
+                    <img
+                      key={i}
+                      className={`mascot-layer${mouth === i ? " is-on" : ""}`}
+                      src={`/mascot/mouth-${p}-${i}.png`}
+                      alt=""
+                      draggable={false}
+                    />
+                  ))}
+              </div>
             ))}
           </div>
         </div>
@@ -89,4 +111,56 @@ export function AgentMascot({ mood = "waiting", className = "" }: AgentMascotPro
       </div>
     </div>
   );
+}
+
+/** Natural blinking: every 2.5–5.5 s, sometimes twice in a row. */
+function useBlink(): boolean {
+  const [blinking, setBlinking] = useState(false);
+  useEffect(() => {
+    let timer = 0;
+    let alive = true;
+    const later = (ms: number, fn: () => void) => {
+      timer = window.setTimeout(() => alive && fn(), ms);
+    };
+    const wait = () => later(2500 + Math.random() * 3000, blink);
+    const blink = () => {
+      setBlinking(true);
+      later(130, () => {
+        setBlinking(false);
+        if (Math.random() < 0.2) {
+          later(150, () => {
+            setBlinking(true);
+            later(120, () => {
+              setBlinking(false);
+              wait();
+            });
+          });
+        } else {
+          wait();
+        }
+      });
+    };
+    wait();
+    return () => {
+      alive = false;
+      window.clearTimeout(timer);
+    };
+  }, []);
+  return blinking;
+}
+
+/** Mouth shape (0 closed … 3 wide) while the assistant is speaking; -1 = leave the artwork's own mouth. */
+function useMouthFrame(speaking: boolean): number {
+  const [frame, setFrame] = useState(0);
+  useEffect(() => {
+    if (!speaking) {
+      setFrame(0);
+      return;
+    }
+    return onMouthLevel((level) => {
+      const next = levelToFrame(level);
+      setFrame((f) => (f === next ? f : next));
+    });
+  }, [speaking]);
+  return speaking ? frame : -1;
 }

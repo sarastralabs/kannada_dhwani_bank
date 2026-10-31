@@ -2,6 +2,7 @@ import { base64ToAudioUrl } from "../api/client";
 
 import { fetchSpeakKannada } from "../api/client";
 import { isAbortError } from "./abortError";
+import { publishMouthLevel, smoothLevel, wavEnvelope } from "./lipsync";
 
 let audioUnlocked = false;
 let sharedCtx: AudioContext | null = null;
@@ -10,11 +11,40 @@ let sharedCtx: AudioContext | null = null;
 export function playBase64Wav(audioB64: string, signal?: AbortSignal): Promise<void> {
   if (!audioB64) return Promise.resolve();
   const url = base64ToAudioUrl(audioB64);
+  const envelope = wavEnvelope(audioB64);
   return new Promise((resolve, reject) => {
     const audio = new Audio(url);
+    // Lip-sync: publish the loudness of the part being played, every animation frame.
+    let raf = 0;
+    let level = 0;
+    const stopMouth = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      publishMouthLevel(0);
+    };
+    const driveMouth = () => {
+      let lastWiggle = 0;
+      const tick = () => {
+        // No readable waveform (unexpected format): keep the mouth moving while audio plays.
+        let raw = 0;
+        if (envelope) {
+          raw = envelope.levels[Math.floor(audio.currentTime / envelope.hop)] ?? 0;
+        } else if (performance.now() - lastWiggle > 120) {
+          lastWiggle = performance.now();
+          raw = 0.25 + Math.random() * 0.7;
+        } else {
+          raw = level;
+        }
+        level = smoothLevel(level, audio.paused ? 0 : raw);
+        publishMouthLevel(level);
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
     // Mute a fraction of echo from Web Audio by reducing system volume slightly
     // is not practical — instead we add a post-playback silence gap (see below)
     const cleanup = () => {
+      stopMouth();
       URL.revokeObjectURL(url);
       audio.onended = null;
       audio.onerror = null;
@@ -43,7 +73,7 @@ export function playBase64Wav(audioB64: string, signal?: AbortSignal): Promise<v
       cleanup();
       reject(new Error("Audio playback failed"));
     };
-    void audio.play().catch((err) => {
+    void audio.play().then(driveMouth).catch((err) => {
       signal?.removeEventListener("abort", onAbort);
       cleanup();
       reject(err);
