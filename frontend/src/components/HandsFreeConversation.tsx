@@ -290,6 +290,7 @@ export function HandsFreeConversation({
   const onOutcomeRef = useRef(onOutcome);
   onOutcomeRef.current = onOutcome;
   const playAbortRef = useRef<AbortController | null>(null);
+  const talkRef = useRef<HTMLDivElement | null>(null);
   /** Lines the assistant spoke recently, for the echo guard. */
   const spokenRef = useRef<{ text: string; at: number }[]>([]);
   const rememberSpoken = (text?: string | null) => {
@@ -998,6 +999,11 @@ export function HandsFreeConversation({
     onTurnRef.current?.(turn);
   }, [turn]);
 
+  // One column: keep the live question in view as the details above it grow.
+  useEffect(() => {
+    talkRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [turn, subtitle, formSession?.fieldIndex]);
+
   const micPct = Math.min(100, Math.round(micLevel * 800));
   const form = formSession?.form ?? null;
   const fieldIndex = formSession?.fieldIndex ?? 0;
@@ -1051,8 +1057,41 @@ export function HandsFreeConversation({
     : [];
 
   return (
+    <>
+    {/* The assistant sits centred above both panels, large enough to read from across the counter. */}
+    {presence && <div className="hf-hero">{presence}</div>}
     <div className={`hf hf-mode-${mode}`}>
-      <div className="hf-talk">
+      <aside className="hf-details" aria-label="ನಿಮ್ಮ ವಿವರಗಳು">
+        <section className="hf-details-card">
+          <h2 className="hf-details-title">ನಿಮ್ಮ ವಿವರಗಳು</h2>
+          {detailsForm ? (
+            <>
+              <p className="hf-details-form">{detailsForm.title_kn}</p>
+              {!form && submitted && (
+                <p className={`hf-details-done${submitted.saved ? "" : " is-warn"}`}>
+                  {submitted.saved ? "✓ ಅರ್ಜಿಯನ್ನು ಸಲ್ಲಿಸಲಾಗಿದೆ" : "ಅರ್ಜಿಯನ್ನು ಉಳಿಸಲಾಗಲಿಲ್ಲ"}
+                </p>
+              )}
+              <dl className="hf-details-list">
+                {detailsRows.map((row) => (
+                  <div
+                    key={row.id}
+                    className={["hf-details-row", row.isCurrent ? "is-current" : "", row.done ? "is-done" : ""]
+                      .filter(Boolean)
+                      .join(" ")}
+                  >
+                    <dt>{row.label}</dt>
+                    <dd>{row.text || "—"}</dd>
+                  </div>
+                ))}
+              </dl>
+            </>
+          ) : (
+            <p className="hf-details-empty">ಅರ್ಜಿ ತೆರೆದಾಗ ನೀವು ನೀಡುವ ವಿವರಗಳು ಇಲ್ಲಿ ಕಾಣುತ್ತವೆ.</p>
+          )}
+        </section>
+      </aside>
+      <div className="hf-talk" ref={talkRef}>
         <div className={`hf-status hf-tone-${status.tone}`} aria-live="polite">
           <span className="hf-status-dot" aria-hidden />
           <div className="hf-status-text">
@@ -1173,37 +1212,7 @@ export function HandsFreeConversation({
         </footer>
       </div>
 
-      <aside className="hf-details" aria-label="ನಿಮ್ಮ ವಿವರಗಳು">
-        {presence}
-        <section className="hf-details-card">
-          <h2 className="hf-details-title">ನಿಮ್ಮ ವಿವರಗಳು</h2>
-          {detailsForm ? (
-            <>
-              <p className="hf-details-form">{detailsForm.title_kn}</p>
-              {!form && submitted && (
-                <p className={`hf-details-done${submitted.saved ? "" : " is-warn"}`}>
-                  {submitted.saved ? "✓ ಅರ್ಜಿಯನ್ನು ಸಲ್ಲಿಸಲಾಗಿದೆ" : "ಅರ್ಜಿಯನ್ನು ಉಳಿಸಲಾಗಲಿಲ್ಲ"}
-                </p>
-              )}
-              <dl className="hf-details-list">
-                {detailsRows.map((row) => (
-                  <div
-                    key={row.id}
-                    className={["hf-details-row", row.isCurrent ? "is-current" : "", row.done ? "is-done" : ""]
-                      .filter(Boolean)
-                      .join(" ")}
-                  >
-                    <dt>{row.label}</dt>
-                    <dd>{row.text || "—"}</dd>
-                  </div>
-                ))}
-              </dl>
-            </>
-          ) : (
-            <p className="hf-details-empty">ಅರ್ಜಿ ತೆರೆದಾಗ ನೀವು ನೀಡುವ ವಿವರಗಳು ಇಲ್ಲಿ ಕಾಣುತ್ತವೆ.</p>
-          )}
-        </section>
-      </aside>
     </div>
+    </>
   );
 }

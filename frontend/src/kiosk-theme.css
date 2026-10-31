@@ -6,15 +6,18 @@
 
 .hf-orb {
   --lvl: 0;
-  flex: none;
+  position: absolute; /* sits at the right end of the status bar, whatever the bar wraps to */
+  right: clamp(1rem, 2vw, 1.75rem);
+  top: 50%;
+  margin-top: -1.3rem;
   width: 2.6rem;
   height: 2.6rem;
-  margin-left: auto;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #ffd08a 0%, var(--dh-saffron) 45%, var(--dh-saffron-deep) 100%);
   opacity: 0.35;
   transform: scale(0.8);
   transition: opacity 0.25s ease, transform 0.12s linear, box-shadow 0.12s linear;
+  pointer-events: none;
 }
 
 .hf-orb.is-live {
