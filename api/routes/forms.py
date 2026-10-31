@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import re
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -150,9 +151,23 @@ def submit_form(body: FormSubmitBody) -> dict:
         confirmation_kn = "ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಹತ್ತಿರದ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ. ಧನ್ಯವಾದಗಳು."
         confirmation_en = "Your request has been recorded. Please visit the nearest branch to complete the process. Thank you."
 
+    ref = saved.get("ref") or ""
+    if ref:
+        # Spoken digit by digit ("2 6 0 0 0 1 2 3"), and shown on screen as DH-26-000123.
+        spoken = " ".join(re.sub(r"\D", "", ref))
+        confirmation_kn = (
+            f"ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ಅರ್ಜಿ ಸಂಖ್ಯೆ {spoken}. "
+            "ನಿರ್ವಾಹಕರು ಪರಿಶೀಲಿಸಿದ ನಂತರ, ಮುಂದಿನ ಬಾರಿ ಈ ಸಂಖ್ಯೆಯನ್ನು ಹೇಳಿ ಸ್ಥಿತಿಯನ್ನು ತಿಳಿಯಬಹುದು. ಧನ್ಯವಾದಗಳು."
+        )
+        confirmation_en = (
+            f"Your application has been received. Your application number is {ref}. "
+            "Once staff have reviewed it, come back and say this number to see the result. Thank you."
+        )
+
     return {
         "ok": True,
         "submission": saved,
+        "application_ref": ref,
         "confirmation_kn": confirmation_kn,
         "confirmation_en": confirmation_en,
     }

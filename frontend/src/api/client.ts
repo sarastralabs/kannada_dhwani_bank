@@ -351,7 +351,14 @@ export async function submitFormSubmission(payload: {
   title_en: string;
   values: Record<string, string>;
   kiosk_session_id?: string;
-}): Promise<{ ok: boolean; submission: { id: string }; confirmation_kn?: string; confirmation_en?: string }> {
+}): Promise<{
+  ok: boolean;
+  submission: { id: string };
+  /** Number the customer quotes later, e.g. DH-26-000123. */
+  application_ref?: string;
+  confirmation_kn?: string;
+  confirmation_en?: string;
+}> {
   const res = await fetchWithTimeout(`${API_BASE}/api/forms/submit`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -360,6 +367,31 @@ export async function submitFormSubmission(payload: {
   });
   if (!res.ok) throw new Error("Failed to save form submission");
   return res.json();
+}
+
+export interface ApplicationStatusView {
+  found: boolean;
+  ref?: string;
+  title_kn?: string;
+  status?: string;
+  status_kn?: string;
+  account_number?: string;
+  /** Sentence for the kiosk to read out. */
+  message_kn: string;
+}
+
+/** A customer's own application: its number (spoken digits are fine) and the last 4 digits of their mobile. */
+export async function fetchApplicationStatus(ref: string, mobileLast4: string): Promise<ApplicationStatusView> {
+  const params = new URLSearchParams({ ref: ref.replace(/\s+/g, ""), mobile_last4: mobileLast4.replace(/\D/g, "") });
+  const res = await fetchWithTimeout(`${API_BASE}/api/applications/status?${params}`, { timeoutMs: 15000 });
+  if (res.status === 404) {
+    return { found: false, message_kn: "ಈ ಅರ್ಜಿ ಸಂಖ್ಯೆ ಅಥವಾ ಮೊಬೈಲ್ ಅಂಕಿಗಳು ಹೊಂದಿಕೆಯಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಹೇಳಿ." };
+  }
+  if (res.status === 429) {
+    return { found: false, message_kn: "ತುಂಬಾ ಪ್ರಯತ್ನಗಳಾಗಿವೆ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ." };
+  }
+  if (!res.ok) throw new Error("Could not check the application");
+  return { found: true, ...(await res.json()) };
 }
 
 export async function resolveFormChoice(
@@ -389,7 +421,37 @@ export interface FormSubmissionItem {
   title_en: string;
   values: Record<string, string>;
   kiosk_session_id?: string;
-  status?: string;
+  status?: ApplicationStatus | string;
+  /** Customer-facing application number, e.g. DH-26-000123. */
+  ref?: string;
+  decision?: ApplicationDecision | null;
+}
+
+export type ApplicationStatus = "submitted" | "approved" | "rejected" | "needs_info";
+
+export interface ApplicationDecision {
+  action: "approve" | "reject" | "needs_info";
+  by: string;
+  at: string;
+  /** Message the customer sees. */
+  note: string;
+  result?: { account_number?: string; account_type?: string; existing_customer?: boolean };
+}
+
+export async function decideApplication(
+  id: string,
+  action: ApplicationDecision["action"],
+  note = "",
+): Promise<FormSubmissionItem> {
+  const { adminAuthHeaders } = await import("../auth/adminSession");
+  const res = await fetchWithTimeout(`${API_BASE}/api/admin/applications/${encodeURIComponent(id)}/decision`, {
+    method: "POST",
+    headers: { ...adminAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ action, note }),
+    timeoutMs: 20000,
+  });
+  if (!res.ok) throw new Error(await parseApiError(res, "Could not save the decision"));
+  return res.json();
 }
 
 export async function fetchFormSubmissions(limit = 50): Promise<FormSubmissionItem[]> {

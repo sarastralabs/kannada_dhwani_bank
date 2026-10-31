@@ -595,6 +595,33 @@
           "auto": "today"
         }
       ]
+    },
+    {
+      "id": "application_status",
+      "category": "inquiry",
+      "source_note": "Status of a submitted application — number from the confirmation, plus the last 4 digits of the mobile",
+      "title_kn": "ಅರ್ಜಿಯ ಸ್ಥಿತಿ ಪರಿಶೀಲನೆ",
+      "title_en": "Application status",
+      "description_kn": "ನಿಮ್ಮ ಅರ್ಜಿ ಸಂಖ್ಯೆ ಹೇಳಿ — ಅರ್ಜಿಯ ಸ್ಥಿತಿಯನ್ನು ತಿಳಿಸುತ್ತೇವೆ.",
+      "description_en": "Say your application number to hear what happened to your application.",
+      "fields": [
+        {
+          "id": "application_number",
+          "label_kn": "ಅರ್ಜಿ ಸಂಖ್ಯೆ",
+          "label_en": "Application number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಅರ್ಜಿ ಸಂಖ್ಯೆಯ ಅಂಕಿಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "mobile_last4",
+          "label_kn": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯ ಕೊನೆಯ 4 ಅಂಕಿಗಳು",
+          "label_en": "Last 4 digits of mobile number",
+          "prompt_kn": "ಈಗ ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯ ಕೊನೆಯ ನಾಲ್ಕು ಅಂಕಿಗಳನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        }
+      ]
     }
   ]
 }

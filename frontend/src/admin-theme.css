@@ -270,3 +270,81 @@ button.adm-login-submit {
   margin-top: 0.4rem;
   font-size: 0.8rem;
 }
+
+/* ── Application decisions ─────────────────────────────────────────────── */
+
+.ac-decision {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.85rem 0 1.1rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid #ebe5f4;
+  border-radius: 14px;
+  background: #faf8fd;
+}
+
+.ac-decision-label {
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--ac-text);
+}
+
+.ac-decision-note {
+  width: 100%;
+  resize: vertical;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--ac-border);
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+}
+
+.ac-decision-note:focus {
+  outline: 2px solid var(--dh-indigo-500);
+  outline-offset: 1px;
+}
+
+.ac-decision-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ac-decision-done {
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid #ebe5f4;
+  background: #fff;
+}
+
+.ac-decision-done--approved {
+  background: #e8faf7;
+  border-color: #bff0e8;
+}
+
+.ac-decision-done--rejected {
+  background: #ffeef2;
+  border-color: #ffd0dc;
+}
+
+.ac-decision-done--needs_info {
+  background: #f4ecff;
+  border-color: #e6d5ff;
+}
+
+.ac-decision-account {
+  margin: 0.35rem 0 0;
+  font-size: 1.02rem;
+}
+
+.ac-decision-account code {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.ac-toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

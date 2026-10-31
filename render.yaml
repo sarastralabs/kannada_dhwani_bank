@@ -19,8 +19,9 @@ services:
         value: "0"
       - key: BANK_TTS_ALLOW_MMS
         value: "0"
+      # Customers, accounts and applications live in MongoDB, so new accounts survive restarts.
       - key: BANK_CUSTOMER_STORE
-        value: sqlite
+        value: mongo
       # Open the lobby automatically after every restart / wake-up.
       - key: BANK_KIOSK_AUTOSTART
         value: "1"

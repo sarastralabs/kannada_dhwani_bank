@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   clearFormSubmissions,
+  decideApplication,
   fetchForm,
   fetchFormSubmissions,
+  type ApplicationDecision,
   type BankForm,
   type FormSubmissionItem,
 } from "../../api/client";
@@ -21,11 +23,94 @@ function who(values: Record<string, string>): string {
   );
 }
 
+const STATUS: Record<string, { label: string; tone: "amber" | "green" | "red" | "violet" | "slate" }> = {
+  submitted: { label: "Needs review", tone: "amber" },
+  approved: { label: "Approved", tone: "green" },
+  rejected: { label: "Rejected", tone: "red" },
+  needs_info: { label: "Info requested", tone: "violet" },
+};
+
+function StatusBadge({ status }: { status?: string }) {
+  const s = STATUS[status || "submitted"] ?? { label: status || "—", tone: "slate" as const };
+  return <Badge tone={s.tone}>{s.label}</Badge>;
+}
+
+/** Approve / reject / ask for information, with the message the customer will see. */
+function DecisionPanel({ item, onDone }: { item: FormSubmissionItem; onDone: (next: FormSubmissionItem) => void }) {
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const decided = item.status === "approved" || item.status === "rejected";
+  const d: ApplicationDecision | null | undefined = item.decision;
+
+  const act = async (action: ApplicationDecision["action"]) => {
+    setBusy(true);
+    setError(null);
+    try {
+      onDone(await decideApplication(item.id, action, note));
+      setNote("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save the decision");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <section className="ac-decision no-print" aria-label="Decision">
+      {d && (
+        <div className={`ac-decision-done ac-decision-done--${item.status}`}>
+          <strong>
+            {STATUS[item.status || ""]?.label ?? item.status} by {d.by}
+          </strong>
+          <span className="ac-sub"> · {dateTime(d.at)}</span>
+          {d.result?.account_number && (
+            <p className="ac-decision-account">
+              Account opened: <code>{d.result.account_number}</code> ({d.result.account_type}
+              {d.result.existing_customer ? ", added to an existing customer" : ""})
+            </p>
+          )}
+          {d.note && <p className="ac-sub">Message to customer: {d.note}</p>}
+        </div>
+      )}
+      {!decided && (
+        <>
+          <label className="ac-decision-label" htmlFor="decision-note">
+            Message to the customer <span className="ac-muted">(required to reject or ask for information)</span>
+          </label>
+          <textarea
+            id="decision-note"
+            className="ac-decision-note"
+            rows={2}
+            maxLength={500}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="e.g. Please bring your ID proof to the branch"
+          />
+          {error && <ErrorNote message={error} />}
+          <div className="ac-decision-actions">
+            <button type="button" className="ac-btn ac-btn--gold" disabled={busy} onClick={() => void act("approve")}>
+              {item.form_id === "open_account" ? "Approve and open account" : "Approve"}
+            </button>
+            <button type="button" className="ac-btn ac-btn--outline" disabled={busy} onClick={() => void act("needs_info")}>
+              Ask for information
+            </button>
+            <button type="button" className="ac-btn ac-btn--danger" disabled={busy} onClick={() => void act("reject")}>
+              Reject
+            </button>
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 export function Forms({ apiOnline }: { apiOnline: boolean | null }) {
   const [items, setItems] = useState<FormSubmissionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formFilter, setFormFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<FormSubmissionItem | null>(null);
   const [schemas, setSchemas] = useState<Record<string, BankForm>>({});
@@ -82,10 +167,18 @@ export function Forms({ apiOnline }: { apiOnline: boolean | null }) {
     const q = query.trim().toLowerCase();
     return items.filter((i) => {
       if (formFilter && i.form_id !== formFilter) return false;
+      if (statusFilter && (i.status || "submitted") !== statusFilter) return false;
       if (q && !`${i.title_en} ${i.title_kn} ${Object.values(i.values).join(" ")}`.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [items, formFilter, query]);
+  }, [items, formFilter, statusFilter, query]);
+
+  const waiting = items.filter((i) => (i.status || "submitted") === "submitted").length;
+
+  const applyDecision = (next: FormSubmissionItem) => {
+    setItems((prev) => prev.map((i) => (i.id === next.id ? next : i)));
+    setSelected(next);
+  };
 
   const schema = selected ? schemas[selected.form_id] : undefined;
   const fields = selected
@@ -98,6 +191,13 @@ export function Forms({ apiOnline }: { apiOnline: boolean | null }) {
     <div className="ac-page">
       <div className="ac-toolbar">
         <div className="ac-toolbar-left">
+          <select className="ac-select" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} aria-label="Status">
+            <option value="">All statuses</option>
+            <option value="submitted">Needs review ({waiting})</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+            <option value="needs_info">Info requested</option>
+          </select>
           <select className="ac-select" value={formFilter} onChange={(e) => setFormFilter(e.target.value)} aria-label="Form type">
             <option value="">All forms ({items.length})</option>
             {formTypes.map(([id, title]) => (
@@ -137,9 +237,9 @@ export function Forms({ apiOnline }: { apiOnline: boolean | null }) {
             <table className="ac-table">
               <thead>
                 <tr>
-                  <th>Form</th>
+                  <th>Application</th>
                   <th>Customer</th>
-                  <th>Account</th>
+                  <th>Status</th>
                   <th>Submitted</th>
                 </tr>
               </thead>
@@ -154,15 +254,13 @@ export function Forms({ apiOnline }: { apiOnline: boolean | null }) {
                   >
                     <td>
                       <strong>{i.title_en}</strong>
-                      <div className="ac-sub kn">{i.title_kn}</div>
+                      <div className="ac-sub">
+                        {i.ref ? <code>{i.ref}</code> : null} <span className="kn">{i.title_kn}</span>
+                      </div>
                     </td>
                     <td>{who(i.values) || <span className="ac-muted">—</span>}</td>
                     <td>
-                      {i.values.account_number ? (
-                        <code>{displayFieldValue("account_number", "digits", i.values.account_number)}</code>
-                      ) : (
-                        <span className="ac-muted">—</span>
-                      )}
+                      <StatusBadge status={i.status} />
                     </td>
                     <td className="ac-nowrap">{relativeDay(i.created_at)}</td>
                   </tr>
@@ -189,9 +287,10 @@ export function Forms({ apiOnline }: { apiOnline: boolean | null }) {
             }
           >
             <p className="ac-detail-meta">
-              Submitted {dateTime(selected.created_at)}
-              {selected.status && <Badge tone="blue">{selected.status}</Badge>}
+              {selected.ref && <code>{selected.ref}</code>} Submitted {dateTime(selected.created_at)}{" "}
+              <StatusBadge status={selected.status} />
             </p>
+            <DecisionPanel key={selected.id + (selected.status ?? "")} item={selected} onDone={applyDecision} />
             <dl className="ac-fields">
               {fields.map((f) => {
                 const raw = selected.values[f.id] ?? "";

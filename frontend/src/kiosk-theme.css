@@ -71,3 +71,75 @@
     animation: none;
   }
 }
+
+/* ── Application number and status (details card) ──────────────────────── */
+
+.hf-appref {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  border-radius: 14px;
+  background: #fff4e0;
+  border: 1px solid var(--dh-saffron);
+  font-family: var(--font-kn);
+  color: #5e3300;
+}
+
+.hf-appref strong {
+  font-family: var(--font-ui);
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+  letter-spacing: 0.06em;
+  color: var(--dh-indigo-900);
+}
+
+.hf-statusbox {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  background: #fff4e0;
+  border: 1px solid #ffdca0;
+}
+
+.hf-statusbox--approved {
+  background: #e8faf7;
+  border-color: #bff0e8;
+}
+
+.hf-statusbox--rejected {
+  background: #ffeef2;
+  border-color: #ffd0dc;
+}
+
+.hf-statusbox--needs_info {
+  background: #f4ecff;
+  border-color: #e6d5ff;
+}
+
+.hf-statusbox-text {
+  margin: 0;
+  font-family: var(--font-kn);
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-weight: 800;
+  color: var(--dh-indigo-900);
+}
+
+.hf-statusbox-account {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-kn);
+}
+
+.hf-statusbox-account strong {
+  font-family: var(--font-ui);
+  font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+  letter-spacing: 0.08em;
+  color: #0b7a6c;
+}

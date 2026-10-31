@@ -7,6 +7,7 @@ matches the single Render instance; configure with environment variables:
     BANK_RATE_LIMIT      0 turns everything off (default on)
     BANK_RATE_PER_MIN    speech calls per IP per minute (default 60; one kiosk ≈ 2 per turn)
     BANK_DAILY_CAP       speech calls per day across all IPs (default 0 = unlimited)
+    BANK_LOOKUP_PER_MIN  application-status checks per IP per minute (default 20)
     BANK_LOGIN_MAX_FAILS failed staff logins per IP before lockout (default 5)
     BANK_LOGIN_LOCK_S    lockout length in seconds (default 900)
 """
@@ -28,6 +29,8 @@ SPEECH_PATHS = frozenset(
     {"/api/process-audio", "/api/speak-kannada", "/api/forms/transcribe", "/api/forms/fill-field"}
 )
 LOGIN_PATH = "/api/admin/login"
+# Public lookups that take a number from the customer: limited so numbers cannot be guessed.
+LOOKUP_PATHS = frozenset({"/api/applications/status"})
 
 _lock = threading.Lock()
 _hits: dict[str, deque[float]] = defaultdict(deque)
@@ -89,6 +92,20 @@ def check_speech(ip: str) -> tuple[bool, str, int]:
     return True, "", 0
 
 
+def check_lookup(ip: str) -> tuple[bool, int]:
+    """Count one status lookup. Returns (allowed, retry_after_s)."""
+    now = _clock()
+    per_min = _int_env("BANK_LOOKUP_PER_MIN", 20)
+    with _lock:
+        bucket = _hits[f"lookup:{ip}"]
+        _prune(bucket, 60, now)
+        if per_min > 0 and len(bucket) >= per_min:
+            _blocked_recent.append(now)
+            return False, max(1, int(60 - (now - bucket[0])))
+        bucket.append(now)
+    return True, 0
+
+
 def login_locked(ip: str) -> int:
     """Seconds left on a lockout for this IP (0 = not locked)."""
     now = _clock()
@@ -147,10 +164,17 @@ def _too_many(reason: str, retry_after: int) -> JSONResponse:
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if not enabled() or request.method != "POST":
+        if not enabled():
             return await call_next(request)
         path = request.url.path
         ip = client_ip(request)
+
+        if path in LOOKUP_PATHS:
+            allowed, retry = check_lookup(ip)
+            return await call_next(request) if allowed else _too_many("rate_limited", retry)
+
+        if request.method != "POST":
+            return await call_next(request)
 
         if path in SPEECH_PATHS:
             allowed, reason, retry = check_speech(ip)

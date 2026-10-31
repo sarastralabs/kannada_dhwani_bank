@@ -54,3 +54,11 @@ Usage shows in the admin console under Overview → System health.
 
 **Keep the free instance awake:** create a free monitor (e.g. UptimeRobot) for
 `https://dhwani-api.onrender.com/health`, interval 5 minutes.
+
+## Applications and accounts
+Customers, accounts, loans and applications are stored in MongoDB (`BANK_CUSTOMER_STORE=mongo`,
+already set in `render.yaml`). On first start the 25 demo accounts are added. Staff approve or
+reject applications under **Applications** in the admin console; approving an account opening
+creates the account (a 10-digit number with a check digit). The customer says the application
+number (and the last 4 digits of their mobile) at the kiosk to hear the result. All balances are
+demo money.

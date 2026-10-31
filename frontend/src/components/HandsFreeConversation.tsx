@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
+  fetchApplicationStatus,
   fetchDemoBalance,
   fetchForm,
   fetchKioskGreetAudio,
@@ -8,6 +9,7 @@ import {
   normalizeFormValue,
   processAudio,
   submitFormSubmission,
+  type ApplicationStatusView,
   type BankForm,
   type PipelineContext,
   type PipelineResult,
@@ -175,6 +177,8 @@ interface SubmittedForm {
   values: Record<string, string>;
   shown: Record<string, string>;
   saved: boolean;
+  /** Application number the customer can quote later, e.g. DH-26-000123. */
+  ref?: string;
 }
 
 function formListenOpts(field: FormField): VadListenOptions {
@@ -275,6 +279,7 @@ export function HandsFreeConversation({
   const [subtitle, setSubtitle] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<SubmittedForm | null>(null);
   const [balanceResult, setBalanceResult] = useState<BalanceResultView | null>(null);
+  const [statusResult, setStatusResult] = useState<ApplicationStatusView | null>(null);
   const [submitWarning, setSubmitWarning] = useState<string | null>(null);
   /** Last thing STT heard from the customer — shown so they can catch mishearings. */
   const [heardRaw, setHeard] = useState<string | null>(null);
@@ -526,11 +531,12 @@ export function HandsFreeConversation({
       setSubmitted(null);
       setLastResult(null);
       setBalanceResult(null);
+      setStatusResult(null);
       setHint(`ಅರ್ಜಿ: ${detail.title_kn}`);
       await runFormLoop();
       if (!still()) return;
       // Balance inquiry already spoke the result and should not reopen assist TTS.
-      if (formId === "balance_inquiry") return;
+      if (formId === "balance_inquiry" || formId === "application_status") return;
       await continueAssist();
     };
 
@@ -540,6 +546,35 @@ export function HandsFreeConversation({
 
         const fields = askableFields(session.form);
         if (session.fieldIndex >= fields.length) {
+          if (session.form.id === "application_status") {
+            setTurn("thinking");
+            let said = "ಕ್ಷಮಿಸಿ, ಅರ್ಜಿಯ ಸ್ಥಿತಿಯನ್ನು ಈಗ ತಿಳಿಯಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಸಿಬ್ಬಂದಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ.";
+            let found = false;
+            try {
+              const info = await fetchApplicationStatus(
+                session.values.application_number ?? "",
+                session.values.mobile_last4 ?? "",
+              );
+              said = info.message_kn;
+              found = info.found;
+              if (info.found) setStatusResult(info);
+            } catch (err) {
+              if (isAbortError(err)) return;
+              console.warn("[hands-free] Application status failed:", err);
+            }
+            setTurn("speaking");
+            setHint(said);
+            await playKannadaLine(said);
+            if (!found) {
+              // Not matched: ask for the number again.
+              session = { ...session, fieldIndex: 0, values: {}, skipFirstFieldPrompt: false };
+              setSession(session);
+              continue;
+            }
+            onOutcomeRef.current?.("happy");
+            setSession(null);
+            return;
+          }
           if (session.form.id === "balance_inquiry") {
             const acct = session.values.account_number?.trim();
             setTurn("thinking");
@@ -581,6 +616,7 @@ export function HandsFreeConversation({
           setSubtitle(null);
           const done = session;
           let saved = true;
+          let appRef = "";
           let confirmText = "ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಹತ್ತಿರದ ಶಾಖೆಗೆ ಭೇಟಿ ನೀಡಿ. ಧನ್ಯವಾದಗಳು.";
           try {
             const submitResult = await submitFormSubmission({
@@ -592,6 +628,7 @@ export function HandsFreeConversation({
             });
             const confirmKn = (submitResult as Record<string, unknown>).confirmation_kn as string | undefined;
             if (confirmKn?.trim()) confirmText = confirmKn;
+            appRef = submitResult.application_ref || "";
             setSubmitWarning(null);
           } catch (err) {
             if (isAbortError(err)) return;
@@ -600,7 +637,7 @@ export function HandsFreeConversation({
             setSubmitWarning("ಅರ್ಜಿಯನ್ನು ಉಳಿಸಲಾಗಲಿಲ್ಲ — ದಯವಿಟ್ಟು ಸಿಬ್ಬಂದಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ");
           }
           if (!still()) return;
-          setSubmitted({ form: done.form, values: done.values, shown: done.shown, saved });
+          setSubmitted({ form: done.form, values: done.values, shown: done.shown, saved, ref: appRef });
           if (saved) onOutcomeRef.current?.("happy");
           setSession(null);
           try {
@@ -1064,12 +1101,32 @@ export function HandsFreeConversation({
       <aside className="hf-details" aria-label="ನಿಮ್ಮ ವಿವರಗಳು">
         <section className="hf-details-card">
           <h2 className="hf-details-title">ನಿಮ್ಮ ವಿವರಗಳು</h2>
+          {statusResult && !form && (
+            <div className={`hf-statusbox hf-statusbox--${statusResult.status ?? "submitted"}`}>
+              <p className="hf-details-form">
+                {statusResult.title_kn} · {statusResult.ref}
+              </p>
+              <p className="hf-statusbox-text">{statusResult.status_kn}</p>
+              {statusResult.account_number && (
+                <p className="hf-statusbox-account">
+                  <span>ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆ</span>
+                  <strong>{statusResult.account_number}</strong>
+                </p>
+              )}
+            </div>
+          )}
           {detailsForm ? (
             <>
               <p className="hf-details-form">{detailsForm.title_kn}</p>
               {!form && submitted && (
                 <p className={`hf-details-done${submitted.saved ? "" : " is-warn"}`}>
                   {submitted.saved ? "✓ ಅರ್ಜಿಯನ್ನು ಸಲ್ಲಿಸಲಾಗಿದೆ" : "ಅರ್ಜಿಯನ್ನು ಉಳಿಸಲಾಗಲಿಲ್ಲ"}
+                </p>
+              )}
+              {!form && submitted?.saved && submitted.ref && (
+                <p className="hf-appref">
+                  <span>ಅರ್ಜಿ ಸಂಖ್ಯೆ</span>
+                  <strong>{submitted.ref}</strong>
                 </p>
               )}
               <dl className="hf-details-list">

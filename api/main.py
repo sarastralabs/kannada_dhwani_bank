@@ -29,7 +29,7 @@ from backend.cuda_runtime import ensure_compatible_cudnn
 ensure_compatible_cudnn()
 
 from api.history import init_db
-from api.routes import admin, balance, forms, history, insights, kiosk, landing, pipeline
+from api.routes import admin, applications, balance, forms, history, insights, kiosk, landing, pipeline
 
 os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
@@ -65,6 +65,7 @@ app.include_router(forms.router, prefix="/api")
 app.include_router(kiosk.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 app.include_router(insights.router, prefix="/api")
+app.include_router(applications.router, prefix="/api")
 
 
 def autostart_kiosk() -> bool:

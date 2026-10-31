@@ -117,6 +117,7 @@ export function Overview({ apiOnline, onNavigate, onOpenLobby }: OverviewProps) 
       attention,
       avg,
       forms: forms.filter((f) => isToday(f.created_at)).length,
+      pending: forms.filter((f) => (f.status || "submitted") === "submitted").length,
     };
   }, [today, status?.sessions, forms]);
 
@@ -225,9 +226,11 @@ export function Overview({ apiOnline, onNavigate, onOpenLobby }: OverviewProps) 
           <span className="ac-kpi-sub">speech → answer text</span>
         </article>
         <button type="button" className="ac-kpi ac-kpi--link" onClick={() => onNavigate("forms")}>
-          <span className="ac-kpi-label">Forms today</span>
-          <strong className="ac-kpi-value">{kpi.forms}</strong>
-          <span className="ac-kpi-sub">submitted by voice →</span>
+          <span className="ac-kpi-label">Applications to review</span>
+          <strong className={`ac-kpi-value ${kpi.pending > 0 ? "is-warn" : ""}`}>{kpi.pending}</strong>
+          <span className="ac-kpi-sub">
+            {kpi.pending > 0 ? "waiting for your decision →" : "all decided"} · {kpi.forms} new today
+          </span>
         </button>
       </div>
 

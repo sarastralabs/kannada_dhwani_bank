@@ -204,6 +204,29 @@ def _submissions_path() -> str:
     )
 
 
+def _next_application_ref() -> str:
+    """Customer-facing application number, e.g. DH-26-000123 (counter kept per year)."""
+    year = datetime.now(timezone.utc).strftime("%y")
+    db = _get_db()
+    if db is not None:
+        from pymongo import ReturnDocument
+
+        doc = db.counters.find_one_and_update(
+            {"_id": f"application-{year}"},
+            {"$inc": {"seq": 1}},
+            upsert=True,
+            return_document=ReturnDocument.AFTER,
+        )
+        seq = int(doc["seq"])
+    else:
+        path = _submissions_path()
+        seq = 1
+        if os.path.isfile(path):
+            with open(path, encoding="utf-8") as f:
+                seq = sum(1 for line in f if line.strip()) + 1
+    return f"DH-{year}-{seq:06d}"
+
+
 def save_form_submission(
     form_id: str,
     title_kn: str,
@@ -215,6 +238,7 @@ def save_form_submission(
 ) -> dict[str, Any]:
     doc = {
         "created_at": _now(),
+        "ref": _next_application_ref(),
         "form_id": form_id,
         "title_kn": title_kn,
         "title_en": title_en,
@@ -224,7 +248,7 @@ def save_form_submission(
     }
     db = _get_db()
     if db is not None:
-        ins = db.form_submissions.insert_one(doc)
+        ins = db.form_submissions.insert_one(dict(doc))
         return {"id": str(ins.inserted_id), **doc}
 
     # Local fallback — append JSON lines file
@@ -289,6 +313,8 @@ def list_form_submissions(limit: int = 50) -> list[dict[str, Any]]:
                     "values": row.get("values") or {},
                     "kiosk_session_id": row.get("kiosk_session_id", ""),
                     "status": row.get("status", ""),
+                    "ref": row.get("ref", ""),
+                    "decision": row.get("decision"),
                 }
             )
         return out
@@ -316,6 +342,8 @@ def list_form_submissions(limit: int = 50) -> list[dict[str, Any]]:
                         "values": doc.get("values") or {},
                         "kiosk_session_id": doc.get("kiosk_session_id", ""),
                         "status": doc.get("status", ""),
+                        "ref": doc.get("ref", ""),
+                        "decision": doc.get("decision"),
                     }
                 )
             except json.JSONDecodeError:
@@ -333,3 +361,92 @@ def ping_mongo() -> bool:
         return True
     except Exception:
         return False
+
+
+# ── Applications: look up and decide ─────────────────────────────────────────
+
+def _read_jsonl() -> list[dict[str, Any]]:
+    import json
+
+    path = _submissions_path()
+    rows: list[dict[str, Any]] = []
+    if os.path.isfile(path):
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        rows.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
+    return rows
+
+
+def _shape(doc: dict[str, Any], doc_id: str) -> dict[str, Any]:
+    return {
+        "id": doc_id,
+        "created_at": doc.get("created_at", ""),
+        "ref": doc.get("ref", ""),
+        "form_id": doc.get("form_id", ""),
+        "title_kn": doc.get("title_kn", ""),
+        "title_en": doc.get("title_en", ""),
+        "values": doc.get("values") or {},
+        "kiosk_session_id": doc.get("kiosk_session_id", ""),
+        "status": doc.get("status", ""),
+        "decision": doc.get("decision"),
+    }
+
+
+def get_application(key: str) -> dict[str, Any] | None:
+    """One application by its id or its customer-facing reference (DH-26-000123)."""
+    key = (key or "").strip()
+    if not key:
+        return None
+    db = _get_db()
+    if db is not None:
+        from bson import ObjectId
+        from bson.errors import InvalidId
+
+        doc = db.form_submissions.find_one({"ref": key.upper()})
+        if doc is None:
+            try:
+                doc = db.form_submissions.find_one({"_id": ObjectId(key)})
+            except (InvalidId, TypeError):
+                doc = None
+        return _shape(doc, str(doc["_id"])) if doc else None
+    for row in _read_jsonl():
+        if row.get("ref") == key.upper() or row.get("created_at") == key:
+            return _shape(row, row.get("created_at", ""))
+    return None
+
+
+def decide_application(app_id: str, *, status: str, decision: dict[str, Any]) -> dict[str, Any] | None:
+    """Record a staff decision on an application. Returns the updated application."""
+    db = _get_db()
+    if db is not None:
+        from bson import ObjectId
+        from bson.errors import InvalidId
+
+        try:
+            oid = ObjectId(app_id)
+        except (InvalidId, TypeError):
+            return None
+        res = db.form_submissions.update_one({"_id": oid}, {"$set": {"status": status, "decision": decision}})
+        return get_application(app_id) if res.matched_count else None
+
+    import json
+
+    rows = _read_jsonl()
+    hit = False
+    for row in rows:
+        if row.get("created_at") == app_id:
+            row["status"], row["decision"], hit = status, decision, True
+    if not hit:
+        return None
+    path = _submissions_path()
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    os.replace(tmp, path)
+    return get_application(app_id)
