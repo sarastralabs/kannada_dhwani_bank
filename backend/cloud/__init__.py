@@ -196,6 +196,12 @@ def record_ok(stage: str, elapsed_ms: int) -> None:
 
 def record_error(stage: str, exc: Exception) -> None:
     kind = exc.kind if isinstance(exc, CloudError) else "server"
+    if kind == "bad_request":
+        # Sarvam refused this one input (e.g. text with no letters). That says nothing
+        # about the service, so do not start the retry back-off that would silence
+        # every other customer for the next BANK_CLOUD_RETRY_S seconds.
+        print(f"[cloud] {stage} sarvam rejected one request: {exc}", file=sys.stderr, flush=True)
+        return
     _write_stage(
         stage,
         {

@@ -151,3 +151,24 @@ def test_missing_cloud_key_is_a_service_fault():
 
 def test_bad_audio_is_not_a_service_fault():
     assert system_status.classify_error("STT failed: audio too short") == "not_understood"
+
+
+def test_one_rejected_input_does_not_block_the_cloud_stage(monkeypatch):
+    from backend import cloud
+    from backend.cloud.sarvam import CloudError
+
+    monkeypatch.setenv("SARVAM_API_KEY", "test-key-123456")
+    monkeypatch.setenv("BANK_CLOUD_PROVIDER", "sarvam")
+    cloud.record_error("tts", CloudError("bad_request", "Text must contain a letter"))
+    assert cloud.blocked_reason("tts") is None
+    assert cloud.use_cloud("tts") is True
+
+
+def test_real_outage_still_backs_off(monkeypatch):
+    from backend import cloud
+    from backend.cloud.sarvam import CloudError
+
+    monkeypatch.setenv("SARVAM_API_KEY", "test-key-123456")
+    monkeypatch.setenv("BANK_CLOUD_PROVIDER", "sarvam")
+    cloud.record_error("tts", CloudError("server", "Sarvam service error 503"))
+    assert cloud.blocked_reason("tts") is not None
