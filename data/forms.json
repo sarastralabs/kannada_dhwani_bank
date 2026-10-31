@@ -622,6 +622,33 @@
           "required": true
         }
       ]
+    },
+    {
+      "id": "my_account",
+      "category": "inquiry",
+      "source_note": "Returning customer: last 4 digits of an account and of the registered mobile",
+      "title_kn": "ನನ್ನ ಖಾತೆಯ ವಿವರಗಳು",
+      "title_en": "My account details",
+      "description_kn": "ಖಾತೆ ಮತ್ತು ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯ ಕೊನೆಯ ಅಂಕಿಗಳನ್ನು ಹೇಳಿ — ನಿಮ್ಮ ಖಾತೆ, ಸಾಲ ಮತ್ತು ವ್ಯವಹಾರಗಳನ್ನು ತೋರಿಸುತ್ತೇವೆ.",
+      "description_en": "Say the last digits of your account and mobile number to see your accounts, loans and recent activity.",
+      "fields": [
+        {
+          "id": "account_last4",
+          "label_kn": "ಖಾತೆ ಸಂಖ್ಯೆಯ ಕೊನೆಯ 4 ಅಂಕಿಗಳು",
+          "label_en": "Last 4 digits of account number",
+          "prompt_kn": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಖಾತೆ ಸಂಖ್ಯೆಯ ಕೊನೆಯ ನಾಲ್ಕು ಅಂಕಿಗಳನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        },
+        {
+          "id": "mobile_last4",
+          "label_kn": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯ ಕೊನೆಯ 4 ಅಂಕಿಗಳು",
+          "label_en": "Last 4 digits of mobile number",
+          "prompt_kn": "ಈಗ ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯ ಕೊನೆಯ ನಾಲ್ಕು ಅಂಕಿಗಳನ್ನು ಹೇಳಿ",
+          "type": "digits",
+          "required": true
+        }
+      ]
     }
   ]
 }

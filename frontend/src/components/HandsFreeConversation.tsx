@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   fetchApplicationStatus,
+  fetchCustomerSummary,
   fetchDemoBalance,
   fetchForm,
   fetchKioskGreetAudio,
@@ -11,6 +12,7 @@ import {
   submitFormSubmission,
   type ApplicationStatusView,
   type BankForm,
+  type CustomerSummaryView,
   type PipelineContext,
   type PipelineResult,
   type FormField,
@@ -181,6 +183,78 @@ interface SubmittedForm {
   ref?: string;
 }
 
+const KIND_KN: Record<string, string> = {
+  deposit: "ಜಮಾ",
+  withdrawal: "ಹಿಂಪಡೆದದ್ದು",
+  transfer_in: "ವರ್ಗಾವಣೆ ಬಂದಿದೆ",
+  transfer_out: "ವರ್ಗಾವಣೆ ಹೋಗಿದೆ",
+  loan_disbursal: "ಸಾಲ ಜಮಾ",
+  fd_open: "ಸ್ಥಿರ ಠೇವಣಿ",
+  reversal: "ಹಿಂತಿರುಗಿಸಲಾಗಿದೆ",
+};
+const OUTGOING = new Set(["withdrawal", "transfer_out", "fd_open"]);
+const inr = (n: number) => `₹${Number(n).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
+
+/** A returning customer's own picture: accounts, loans, deposits, last movements, applications. */
+export function CustomerCard({ info }: { info: CustomerSummaryView }) {
+  return (
+    <div className="hf-custbox">
+      <p className="hf-details-form">{info.name}</p>
+      {info.accounts?.map((a) => (
+        <p key={a.last4} className="hf-custrow">
+          <span>
+            ಖಾತೆ ••••{a.last4}
+            <small> · {a.account_type}</small>
+          </span>
+          <strong>{inr(a.balance_inr)}</strong>
+        </p>
+      ))}
+      {info.loans?.map((l, i) => (
+        <p key={i} className="hf-custrow is-loan">
+          <span>
+            ಸಾಲ ಬಾಕಿ
+            {l.emi_inr ? <small> · ಕಂತು {inr(l.emi_inr)}</small> : null}
+          </span>
+          <strong>{inr(l.outstanding_inr)}</strong>
+        </p>
+      ))}
+      {info.deposits?.map((d, i) => (
+        <p key={i} className="hf-custrow">
+          <span>
+            ಸ್ಥಿರ ಠೇವಣಿ <small>· {d.matures_on}</small>
+          </span>
+          <strong>{inr(d.principal_inr)}</strong>
+        </p>
+      ))}
+      {!!info.transactions?.length && (
+        <ul className="hf-custlist">
+          {info.transactions.slice(0, 4).map((t, i) => (
+            <li key={i}>
+              <span>{KIND_KN[t.kind] ?? t.kind}</span>
+              <strong>
+                {OUTGOING.has(t.kind) ? "−" : "+"}
+                {inr(t.amount)}
+              </strong>
+            </li>
+          ))}
+        </ul>
+      )}
+      {!!info.applications?.length && (
+        <ul className="hf-custlist">
+          {info.applications.slice(0, 3).map((a) => (
+            <li key={a.ref}>
+              <span>
+                {a.ref} <small>{a.title_kn}</small>
+              </span>
+              <strong className={`is-${a.status}`}>{a.status_kn}</strong>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function formListenOpts(field: FormField): VadListenOptions {
   if (NAME_FIELD_IDS.has(field.id) || field.type === "text") {
     return {
@@ -280,6 +354,7 @@ export function HandsFreeConversation({
   const [submitted, setSubmitted] = useState<SubmittedForm | null>(null);
   const [balanceResult, setBalanceResult] = useState<BalanceResultView | null>(null);
   const [statusResult, setStatusResult] = useState<ApplicationStatusView | null>(null);
+  const [customerResult, setCustomerResult] = useState<CustomerSummaryView | null>(null);
   const [submitWarning, setSubmitWarning] = useState<string | null>(null);
   /** Last thing STT heard from the customer — shown so they can catch mishearings. */
   const [heardRaw, setHeard] = useState<string | null>(null);
@@ -532,11 +607,12 @@ export function HandsFreeConversation({
       setLastResult(null);
       setBalanceResult(null);
       setStatusResult(null);
+      setCustomerResult(null);
       setHint(`ಅರ್ಜಿ: ${detail.title_kn}`);
       await runFormLoop();
       if (!still()) return;
       // Balance inquiry already spoke the result and should not reopen assist TTS.
-      if (formId === "balance_inquiry" || formId === "application_status") return;
+      if (formId === "balance_inquiry" || formId === "application_status" || formId === "my_account") return;
       await continueAssist();
     };
 
@@ -546,6 +622,34 @@ export function HandsFreeConversation({
 
         const fields = askableFields(session.form);
         if (session.fieldIndex >= fields.length) {
+          if (session.form.id === "my_account") {
+            setTurn("thinking");
+            let said = "ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಈಗ ತೋರಿಸಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಸಿಬ್ಬಂದಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ.";
+            let found = false;
+            try {
+              const info = await fetchCustomerSummary(
+                session.values.account_last4 ?? "",
+                session.values.mobile_last4 ?? "",
+              );
+              said = info.message_kn;
+              found = info.found;
+              if (info.found) setCustomerResult(info);
+            } catch (err) {
+              if (isAbortError(err)) return;
+              console.warn("[hands-free] Customer summary failed:", err);
+            }
+            setTurn("speaking");
+            setHint(said);
+            await playKannadaLine(said);
+            if (!found) {
+              session = { ...session, fieldIndex: 0, values: {}, skipFirstFieldPrompt: false };
+              setSession(session);
+              continue;
+            }
+            onOutcomeRef.current?.("happy");
+            setSession(null);
+            return;
+          }
           if (session.form.id === "application_status") {
             setTurn("thinking");
             let said = "ಕ್ಷಮಿಸಿ, ಅರ್ಜಿಯ ಸ್ಥಿತಿಯನ್ನು ಈಗ ತಿಳಿಯಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಸಿಬ್ಬಂದಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ.";
@@ -1101,6 +1205,7 @@ export function HandsFreeConversation({
       <aside className="hf-details" aria-label="ನಿಮ್ಮ ವಿವರಗಳು">
         <section className="hf-details-card">
           <h2 className="hf-details-title">ನಿಮ್ಮ ವಿವರಗಳು</h2>
+          {customerResult && !form && <CustomerCard info={customerResult} />}
           {statusResult && !form && (
             <div className={`hf-statusbox hf-statusbox--${statusResult.status ?? "submitted"}`}>
               <p className="hf-details-form">

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchAdminCustomers, type AdminBalanceAuditRow, type AdminCustomerRow } from "../../api/client";
 import { Badge, Card, Empty, ErrorNote, Icon, Loading, money, relativeDay } from "./shared";
+import { CustomerDetail } from "./CustomerDetail";
+import { ExportButton } from "./Insights";
 
 /** backend/balance_lookup.py audit sources -> staff wording. */
 function sourceLabel(source: string): string {
@@ -24,6 +26,7 @@ export function Customers({ apiOnline }: { apiOnline: boolean | null }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (apiOnline === false) return;
@@ -95,12 +98,15 @@ export function Customers({ apiOnline }: { apiOnline: boolean | null }) {
 
       {error && <ErrorNote message={error} />}
 
+      <div className={`ac-split ${selected ? "has-detail" : ""}`}>
       <Card
+        className="ac-split-list"
         title="Accounts"
         titleKn="ಖಾತೆಗಳು"
         flush
         actions={
           <>
+            <ExportButton kind="transactions" label="Export transactions" />
             <label className="ac-search">
               <Icon name="search" size={16} />
               <input type="search" placeholder="Name, account or mobile…" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -131,7 +137,13 @@ export function Customers({ apiOnline }: { apiOnline: boolean | null }) {
               {shown.map((r) => {
                 const shared = (sharedLast4.get(r.account_number.slice(-4)) ?? 0) > 1;
                 return (
-                  <tr key={r.account_number}>
+                  <tr
+                    key={r.account_number}
+                    className={r.customer_id && selected === r.customer_id ? "is-selected" : ""}
+                    onClick={() => r.customer_id && setSelected(selected === r.customer_id ? null : r.customer_id)}
+                    tabIndex={r.customer_id ? 0 : undefined}
+                    onKeyDown={(e) => e.key === "Enter" && r.customer_id && setSelected(r.customer_id)}
+                  >
                     <td>
                       <strong className="kn">{r.holder_name_kn || r.holder_name}</strong>
                       <div className="ac-sub">{r.holder_name}</div>
@@ -170,6 +182,8 @@ export function Customers({ apiOnline }: { apiOnline: boolean | null }) {
           </table>
         )}
       </Card>
+      {selected && <CustomerDetail customerId={selected} onClose={() => setSelected(null)} onChanged={() => void refresh()} />}
+      </div>
 
       <Card title="Balance lookup log" titleKn="ಶಿಲ್ಕು ಪರಿಶೀಲನೆಗಳು" flush>
         {audit.length === 0 ? (

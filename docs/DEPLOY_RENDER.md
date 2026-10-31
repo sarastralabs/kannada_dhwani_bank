@@ -62,3 +62,19 @@ reject applications under **Applications** in the admin console; approving an ac
 creates the account (a 10-digit number with a check digit). The customer says the application
 number (and the last 4 digits of their mobile) at the kiosk to hear the result. All balances are
 demo money.
+
+## What approving does
+| Form | On approval |
+|---|---|
+| Open account | creates the customer and a 10-digit account (check digit); same mobile → extra account |
+| Cash deposit / withdrawal | credits / debits the account; a withdrawal is refused if the balance is too low |
+| RTGS / NEFT | debits the sender; credits the beneficiary when it is one of our accounts |
+| Loan | creates the loan (staff set amount, rate, months; EMI shown) and pays it into the customer's first account |
+| Fixed deposit | debits the account and creates the deposit (quarterly compounding) |
+| Cheque book / ATM card / stop cheque | recorded as fulfilled (stopping the same cheque twice is refused) |
+| Mobile update | changes the number after checking the old one |
+
+Staff see a preview before approving and the reason when something cannot be done. Loan payments
+received at the counter are recorded on the customer's page (interest first, then the loan).
+Returning customers say "ನನ್ನ ಖಾತೆ ವಿವರ" plus the last 4 digits of an account and of their mobile.
+All of this needs `BANK_CUSTOMER_STORE=mongo` and is demo money.

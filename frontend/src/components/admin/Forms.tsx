@@ -2,6 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   clearFormSubmissions,
   decideApplication,
+  previewApplication,
+  type ApplicationPreview,
+  type ApprovalTerms,
   fetchForm,
   fetchFormSubmissions,
   type ApplicationDecision,
@@ -36,18 +39,59 @@ function StatusBadge({ status }: { status?: string }) {
 }
 
 /** Approve / reject / ask for information, with the message the customer will see. */
+const TERM_FORMS = new Set(["apply_loan", "fixed_deposit"]);
+
+/** EMI for a loan, same formula as the server (for the live figure while staff edit the terms). */
+function emiOf(amount: number, ratePct: number, months: number): number {
+  const r = ratePct / 1200;
+  if (months <= 0) return 0;
+  return r === 0 ? amount / months : (amount * r * (1 + r) ** months) / ((1 + r) ** months - 1);
+}
+
+const rupees = (n: number) => `₹${n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
+
 function DecisionPanel({ item, onDone }: { item: FormSubmissionItem; onDone: (next: FormSubmissionItem) => void }) {
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [preview, setPreview] = useState<ApplicationPreview | null>(null);
+  const [terms, setTerms] = useState({ amount: "", rate: "", months: "" });
   const decided = item.status === "approved" || item.status === "rejected";
   const d: ApplicationDecision | null | undefined = item.decision;
+  const hasTerms = TERM_FORMS.has(item.form_id);
+
+  // What approving would do, checked on the server before the button is pressed.
+  useEffect(() => {
+    if (decided) return;
+    let alive = true;
+    previewApplication(item.id)
+      .then((p) => {
+        if (!alive) return;
+        setPreview(p);
+        const x = p.details;
+        setTerms({ amount: String(x.amount ?? ""), rate: String(x.annual_rate_pct ?? ""), months: String(x.tenure_months ?? "") });
+      })
+      .catch(() => alive && setPreview(null));
+    return () => {
+      alive = false;
+    };
+  }, [item.id, decided]);
+
+  const edited: ApprovalTerms | undefined = hasTerms
+    ? { amount: Number(terms.amount) || undefined, annual_rate_pct: terms.rate === "" ? undefined : Number(terms.rate), tenure_months: Number(terms.months) || undefined }
+    : undefined;
+  const liveFigure =
+    hasTerms && edited?.amount && edited.tenure_months && edited.annual_rate_pct !== undefined
+      ? item.form_id === "apply_loan"
+        ? `EMI ≈ ${rupees(emiOf(edited.amount, edited.annual_rate_pct, edited.tenure_months))} a month`
+        : `Matures at ≈ ${rupees(edited.amount * (1 + edited.annual_rate_pct / 400) ** (edited.tenure_months / 3))}`
+      : "";
 
   const act = async (action: ApplicationDecision["action"]) => {
     setBusy(true);
     setError(null);
     try {
-      onDone(await decideApplication(item.id, action, note));
+      onDone(await decideApplication(item.id, action, note, action === "approve" ? edited : undefined));
       setNote("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save the decision");
@@ -70,7 +114,32 @@ function DecisionPanel({ item, onDone }: { item: FormSubmissionItem; onDone: (ne
               {d.result.existing_customer ? ", added to an existing customer" : ""})
             </p>
           )}
+          {(d.result as { summary?: string } | undefined)?.summary && (
+            <p className="ac-sub">Done: {(d.result as { summary?: string }).summary}</p>
+          )}
           {d.note && <p className="ac-sub">Message to customer: {d.note}</p>}
+        </div>
+      )}
+      {!decided && preview && (
+        <p className={`ac-decision-preview ${preview.ok ? "is-ok" : "is-problem"}`}>
+          {preview.ok ? `On approval: ${preview.summary}` : `Cannot approve yet: ${preview.problems.join(" ")}`}
+        </p>
+      )}
+      {!decided && hasTerms && preview?.ok && (
+        <div className="ac-terms">
+          <label>
+            Amount (₹)
+            <input type="number" min="0" value={terms.amount} onChange={(e) => setTerms({ ...terms, amount: e.target.value })} />
+          </label>
+          <label>
+            Interest % a year
+            <input type="number" min="0" step="0.1" value={terms.rate} onChange={(e) => setTerms({ ...terms, rate: e.target.value })} />
+          </label>
+          <label>
+            Months
+            <input type="number" min="1" value={terms.months} onChange={(e) => setTerms({ ...terms, months: e.target.value })} />
+          </label>
+          {liveFigure && <p className="ac-terms-figure">{liveFigure}</p>}
         </div>
       )}
       {!decided && (
@@ -89,7 +158,7 @@ function DecisionPanel({ item, onDone }: { item: FormSubmissionItem; onDone: (ne
           />
           {error && <ErrorNote message={error} />}
           <div className="ac-decision-actions">
-            <button type="button" className="ac-btn ac-btn--gold" disabled={busy} onClick={() => void act("approve")}>
+            <button type="button" className="ac-btn ac-btn--gold" disabled={busy || (preview !== null && !preview.ok)} onClick={() => void act("approve")}>
               {item.form_id === "open_account" ? "Approve and open account" : "Approve"}
             </button>
             <button type="button" className="ac-btn ac-btn--outline" disabled={busy} onClick={() => void act("needs_info")}>

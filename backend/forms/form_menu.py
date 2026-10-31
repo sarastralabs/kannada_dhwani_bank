@@ -21,6 +21,11 @@ FORM_KEYWORDS: dict[str, tuple[str, ...]] = {
     "balance_inquiry": (
         # Balance uses NLU check_balance intent — not direct form keyword bypass
     ),
+    "my_account": (
+        "my account details", "my accounts", "my loans", "my loan", "my deposits",
+        "account details", "my transactions", "recent transactions", "mini statement",
+        "ನನ್ನ ಖಾತೆ ವಿವರ", "ನನ್ನ ಖಾತೆಗಳು", "ನನ್ನ ಸಾಲ", "ನನ್ನ ವ್ಯವಹಾರ", "ಮಿನಿ ಸ್ಟೇಟ್ಮೆಂಟ್",
+    ),
     "application_status": (
         "application status", "status of my application", "track my application",
         "track application", "my application status", "application number",
@@ -119,7 +124,7 @@ def _speech_tokens(text: str) -> list[str]:
 def _menu_forms() -> list[dict[str, Any]]:
     """Customer-facing forms (exclude balance from menu — direct intent handles it)."""
     data = forms_catalog.list_forms()
-    return [f for f in data["forms"] if f["id"] not in ("balance_inquiry", "application_status")]
+    return [f for f in data["forms"] if f["id"] not in ("balance_inquiry", "application_status", "my_account")]
 
 
 def is_form_menu_request(kannada: str, english: str) -> bool:

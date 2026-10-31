@@ -103,10 +103,15 @@ def test_same_mobile_adds_an_account_to_the_existing_customer(backend):
     assert r1["account_number"] != r2["account_number"]
 
 
-def test_other_forms_are_approved_without_side_effects(backend):
+def test_money_forms_need_the_mongodb_store(backend):
     app = submit("cheque_book_request", {"full_name": "ರಾಮ", "account_number": "1234567890", "number_of_leaves": "25"})
-    done = applications.decide(app["id"], "approve", admin="admin")
-    assert done["status"] == "approved" and done["decision"]["result"] == {}
+    if backend == "mongo":
+        done = applications.decide(app["id"], "approve", admin="admin")
+        assert done["status"] == "approved"
+    else:
+        with pytest.raises(applications.DecisionError, match="MongoDB"):
+            applications.decide(app["id"], "approve", admin="admin")
+        assert store.get_application(app["id"])["status"] == "submitted"  # nothing half-done
 
 
 def test_status_check_needs_the_right_mobile_digits(backend):

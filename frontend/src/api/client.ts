@@ -435,19 +435,38 @@ export interface ApplicationDecision {
   at: string;
   /** Message the customer sees. */
   note: string;
-  result?: { account_number?: string; account_type?: string; existing_customer?: boolean };
+  result?: { account_number?: string; account_type?: string; existing_customer?: boolean; summary?: string };
+}
+
+/** Loan / fixed-deposit terms staff can set when approving; anything left out uses the default. */
+export interface ApprovalTerms {
+  amount?: number;
+  annual_rate_pct?: number;
+  tenure_months?: number;
+}
+
+export interface ApplicationPreview {
+  ok: boolean;
+  problems: string[];
+  summary: string;
+  details: { amount?: number; annual_rate_pct?: number; tenure_months?: number; emi_inr?: number; maturity_inr?: number } & Record<string, unknown>;
+}
+
+export async function previewApplication(id: string): Promise<ApplicationPreview> {
+  return adminGetJson<ApplicationPreview>(`/api/admin/applications/${encodeURIComponent(id)}/preview`, "Could not check this application");
 }
 
 export async function decideApplication(
   id: string,
   action: ApplicationDecision["action"],
   note = "",
+  terms?: ApprovalTerms,
 ): Promise<FormSubmissionItem> {
   const { adminAuthHeaders } = await import("../auth/adminSession");
   const res = await fetchWithTimeout(`${API_BASE}/api/admin/applications/${encodeURIComponent(id)}/decision`, {
     method: "POST",
     headers: { ...adminAuthHeaders(), "Content-Type": "application/json" },
-    body: JSON.stringify({ action, note }),
+    body: JSON.stringify({ action, note, terms }),
     timeoutMs: 20000,
   });
   if (!res.ok) throw new Error(await parseApiError(res, "Could not save the decision"));
@@ -1151,7 +1170,7 @@ export const fetchSystemStatus = () => adminGetJson<SystemStatus>("/api/admin/sy
 export const fetchUsageStats = (days = 14) => adminGetJson<UsageStats>(`/api/admin/stats?days=${days}`, "Failed to load stats");
 
 /** Download an admin CSV (needs the auth header, so it cannot be a plain link). */
-export async function downloadAdminCsv(kind: "history" | "submissions"): Promise<void> {
+export async function downloadAdminCsv(kind: "history" | "submissions" | "transactions"): Promise<void> {
   const { adminAuthHeaders } = await import("../auth/adminSession");
   const res = await fetchWithTimeout(`${API_BASE}/api/admin/export/${kind}.csv`, {
     headers: adminAuthHeaders(),
@@ -1161,9 +1180,70 @@ export async function downloadAdminCsv(kind: "history" | "submissions"): Promise
   const url = URL.createObjectURL(await res.blob());
   const a = document.createElement("a");
   a.href = url;
-  a.download = kind === "history" ? "conversations.csv" : "form-submissions.csv";
+  a.download = { history: "conversations.csv", submissions: "form-submissions.csv", transactions: "transactions.csv" }[kind];
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+// ── Customers, loans and the returning-customer view ─────────────────────
+
+export interface CustomerDetail {
+  customer: { id: string; full_name: string; full_name_kn?: string; mobile?: string | null; status: string; created_at: string };
+  accounts: { account_number: string; account_type: string; balance_inr: number; status: string }[];
+  loans: {
+    id: string;
+    loan_type: string;
+    principal_inr: number;
+    outstanding_inr: number;
+    annual_rate_pct?: number;
+    tenure_months?: number;
+    emi_inr?: number;
+    status: string;
+  }[];
+  deposits: { id: string; principal_inr: number; maturity_inr: number; matures_on: string; annual_rate_pct: number; tenure_months: number; status: string }[];
+  transactions: { id: string; account_number: string; kind: string; amount: number; balance_after: number; at: string; ref?: string; counterparty?: string }[];
+  applications: { ref: string; title_en: string; title_kn: string; status: string; created_at: string }[];
+}
+
+export const fetchCustomerDetail = (id: string) =>
+  adminGetJson<CustomerDetail>(`/api/admin/customers/${encodeURIComponent(id)}`, "Could not load this customer");
+
+export async function recordLoanRepayment(loanId: string, amount: number): Promise<{ outstanding_after: number; closed: boolean }> {
+  const { adminAuthHeaders } = await import("../auth/adminSession");
+  const res = await fetchWithTimeout(`${API_BASE}/api/admin/loans/${encodeURIComponent(loanId)}/repayment`, {
+    method: "POST",
+    headers: { ...adminAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ amount }),
+    timeoutMs: 15000,
+  });
+  if (!res.ok) throw new Error(await parseApiError(res, "Could not record the payment"));
+  return res.json();
+}
+
+export interface CustomerSummaryView {
+  found: boolean;
+  name?: string;
+  accounts?: { last4: string; account_type: string; balance_inr: number }[];
+  loans?: { loan_type: string; outstanding_inr: number; emi_inr?: number }[];
+  deposits?: { principal_inr: number; maturity_inr: number; matures_on: string }[];
+  transactions?: { kind: string; amount: number; balance_after: number; at: string; last4: string }[];
+  applications?: { ref: string; title_kn: string; status: string; status_kn: string }[];
+  /** Sentence for the kiosk to read out. */
+  message_kn: string;
+}
+
+/** A returning customer: last 4 digits of an account AND of their registered mobile. */
+export async function fetchCustomerSummary(accountLast4: string, mobileLast4: string): Promise<CustomerSummaryView> {
+  const params = new URLSearchParams({ account_last4: accountLast4.replace(/\D/g, ""), mobile_last4: mobileLast4.replace(/\D/g, "") });
+  const res = await fetchWithTimeout(`${API_BASE}/api/customer/summary?${params}`, { timeoutMs: 15000 });
+  if (res.status === 404) {
+    return { found: false, message_kn: "ಈ ಅಂಕಿಗಳಿಗೆ ಹೊಂದುವ ಖಾತೆ ಸಿಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಹೇಳಿ." };
+  }
+  if (res.status === 429) {
+    return { found: false, message_kn: "ತುಂಬಾ ಪ್ರಯತ್ನಗಳಾಗಿವೆ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ." };
+  }
+  if (!res.ok) throw new Error("Could not load your details");
+  return { found: true, ...(await res.json()) };
 }

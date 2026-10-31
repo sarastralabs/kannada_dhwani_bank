@@ -30,7 +30,7 @@ SPEECH_PATHS = frozenset(
 )
 LOGIN_PATH = "/api/admin/login"
 # Public lookups that take a number from the customer: limited so numbers cannot be guessed.
-LOOKUP_PATHS = frozenset({"/api/applications/status"})
+LOOKUP_PATHS = frozenset({"/api/applications/status", "/api/customer/summary"})
 
 _lock = threading.Lock()
 _hits: dict[str, deque[float]] = defaultdict(deque)

@@ -450,3 +450,25 @@ def decide_application(app_id: str, *, status: str, decision: dict[str, Any]) ->
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
     os.replace(tmp, path)
     return get_application(app_id)
+
+
+def applications_for(mobile_tail: str, account_numbers: list[str], *, limit: int = 8) -> list[dict[str, Any]]:
+    """A customer's recent applications: those quoting their mobile number or one of their accounts."""
+    db = _get_db()
+    if db is None:
+        return []
+    clauses: list[dict[str, Any]] = []
+    if mobile_tail:
+        for field in ("mobile_number", "new_mobile", "old_mobile"):
+            clauses.append({f"values.{field}": {"$regex": f"{mobile_tail}$"}})
+    for field in ("account_number", "remitter_account"):
+        if account_numbers:
+            clauses.append({f"values.{field}": {"$in": account_numbers}})
+    if not clauses:
+        return []
+    rows = db.form_submissions.find({"$or": clauses}).sort("created_at", -1).limit(limit)
+    return [
+        {"ref": r.get("ref", ""), "title_kn": r.get("title_kn", ""), "title_en": r.get("title_en", ""),
+         "status": r.get("status", ""), "created_at": r.get("created_at", "")}
+        for r in rows
+    ]

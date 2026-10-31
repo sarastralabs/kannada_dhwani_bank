@@ -41,7 +41,7 @@ def _form_prompts() -> list[str]:
             phrases.append(
                 f"ಈಗ {title} ಪ್ರಾರಂಭವಾಗುತ್ತದೆ. ಪ್ರತಿ ಪ್ರಶ್ನೆಗೆ ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಿ."
             )
-            if form.get("id") not in ("balance_inquiry", "application_status"):
+            if form.get("id") not in ("balance_inquiry", "application_status", "my_account"):
                 menu_titles.append(title)
         for field in form.get("fields") or []:
             if not isinstance(field, dict) or field.get("auto"):

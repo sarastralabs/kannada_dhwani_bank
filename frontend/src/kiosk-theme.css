@@ -143,3 +143,71 @@
   letter-spacing: 0.08em;
   color: #0b7a6c;
 }
+
+/* ── Returning customer card ───────────────────────────────────────────── */
+
+.hf-custbox {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.hf-custrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  border-radius: 14px;
+  background: #e8faf7;
+  border: 1px solid #bff0e8;
+  font-family: var(--font-kn);
+  font-weight: 700;
+  color: var(--dh-indigo-900);
+}
+
+.hf-custrow.is-loan {
+  background: #fff4e0;
+  border-color: #ffdca0;
+}
+
+.hf-custrow small {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.hf-custrow strong {
+  font-family: var(--font-ui);
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  white-space: nowrap;
+}
+
+.hf-custlist {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.hf-custlist li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.2rem;
+  border-bottom: 1px dashed #e0dcee;
+  font-family: var(--font-kn);
+  color: var(--text);
+}
+
+.hf-custlist small {
+  color: var(--muted);
+}
+
+.hf-custlist .is-approved {
+  color: #0b7a6c;
+}
+
+.hf-custlist .is-rejected {
+  color: #c3194a;
+}

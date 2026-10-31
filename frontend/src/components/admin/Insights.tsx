@@ -171,7 +171,7 @@ export function ActivityChart() {
   );
 }
 
-export function ExportButton({ kind, label = "Export CSV" }: { kind: "history" | "submissions"; label?: string }) {
+export function ExportButton({ kind, label = "Export CSV" }: { kind: "history" | "submissions" | "transactions"; label?: string }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   return (

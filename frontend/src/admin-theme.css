@@ -348,3 +348,105 @@ button.adm-login-submit {
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+/* ── Decision preview, loan terms, customer detail ─────────────────────── */
+
+.ac-decision-preview {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.ac-decision-preview.is-ok {
+  background: #e8faf7;
+  color: #0b5f55;
+}
+
+.ac-decision-preview.is-problem {
+  background: #fff1e0;
+  color: #92400e;
+}
+
+.ac-terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.5rem 0.75rem;
+}
+
+.ac-terms label,
+.ac-pay input {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ac-muted);
+}
+
+.ac-terms input,
+.ac-pay input {
+  display: block;
+  width: 100%;
+  margin-top: 0.2rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--ac-border);
+  border-radius: 9px;
+  font: inherit;
+  color: var(--ac-text);
+  background: #fff;
+}
+
+.ac-terms-figure {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-weight: 700;
+  color: var(--dh-indigo-900);
+}
+
+.ac-custdetail {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.ac-custdetail h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ac-muted);
+}
+
+.ac-custrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed #eee8f5;
+}
+
+.ac-custrow strong:last-child {
+  margin-left: auto;
+}
+
+.ac-loan {
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ebe5f4;
+  border-radius: 12px;
+  background: #faf8fd;
+}
+
+.ac-pay {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+
+.ac-table--tight td {
+  padding: 0.4rem 0.5rem;
+}
+
+.ac-split-list tr.is-selected {
+  background: #f1efff;
+}
