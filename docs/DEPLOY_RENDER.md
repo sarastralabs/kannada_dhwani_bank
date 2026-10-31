@@ -40,3 +40,17 @@ build variable `VITE_API_BASE` to it (no trailing slash), then **Retry deploymen
   `Dockerfile` on a host with ≥2 GB RAM and upload `models/nlu-distilbert`.
 * The staff console's "Speech engines" toggles save to a file that is wiped on every Render
   restart; the env defaults above are what persist.
+
+## Protection and uptime (already set in `render.yaml`)
+| Variable | Effect |
+|---|---|
+| `BANK_RATE_PER_MIN=60` | speech calls allowed per IP per minute (429 after that) |
+| `BANK_DAILY_CAP=3000` | speech calls per day across everyone — protects Sarvam credits |
+| `BANK_LOGIN_MAX_FAILS` / `BANK_LOGIN_LOCK_S` | staff-login lockout (default 5 failures → 15 min) |
+| `BANK_KIOSK_AUTOSTART=1` | opens the lobby after every restart / wake-up |
+| `BANK_RATE_LIMIT=0` | turns the limits off |
+
+Usage shows in the admin console under Overview → System health.
+
+**Keep the free instance awake:** create a free monitor (e.g. UptimeRobot) for
+`https://dhwani-api.onrender.com/health`, interval 5 minutes.

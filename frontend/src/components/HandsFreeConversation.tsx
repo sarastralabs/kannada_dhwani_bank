@@ -22,6 +22,7 @@ import {
 import { SpeakGuideCard } from "./SpeakGuideCard";
 import { useVadRecorder, type VadListenOptions } from "../hooks/useVadRecorder";
 import { isAbortError, userFacingFetchError } from "../utils/abortError";
+import { isEcho } from "../utils/echo";
 import { playBase64Wav, speakKannada, unlockAudio } from "../utils/playAudio";
 import { ANYTHING_ELSE_KN, ASK_NEED_KN, FORM_CONFIRM_SUFFIX_KN } from "../utils/lobbyPhrases";
 import { amountSpeakKn, kannadaDisplayValue } from "../utils/formSummary";
@@ -289,6 +290,13 @@ export function HandsFreeConversation({
   const onOutcomeRef = useRef(onOutcome);
   onOutcomeRef.current = onOutcome;
   const playAbortRef = useRef<AbortController | null>(null);
+  /** Lines the assistant spoke recently, for the echo guard. */
+  const spokenRef = useRef<{ text: string; at: number }[]>([]);
+  const rememberSpoken = (text?: string | null) => {
+    if (!text?.trim()) return;
+    const now = Date.now();
+    spokenRef.current = [...spokenRef.current.filter((l) => now - l.at < 90_000), { text, at: now }].slice(-4);
+  };
   const listenOnceRef = useRef(listenOnce);
   listenOnceRef.current = listenOnce;
   const warmupMicRef = useRef(warmupMic);
@@ -437,7 +445,10 @@ export function HandsFreeConversation({
       playAbortRef.current?.abort();
       const ac = new AbortController();
       playAbortRef.current = ac;
-      if (subtitleText) setSubtitle(subtitleText);
+      if (subtitleText) {
+        setSubtitle(subtitleText);
+        rememberSpoken(subtitleText);
+      }
       setTurn("speaking");
       await waitForUiPaint();
       try {
@@ -455,6 +466,7 @@ export function HandsFreeConversation({
     ) => {
       // Show text on UI first, then speak — never speak before the subtitle paints.
       setSubtitle(text);
+      rememberSpoken(text);
       await waitForUiPaint();
       await playKannada(text, cachedB64, speaker);
     };
@@ -860,6 +872,12 @@ export function HandsFreeConversation({
             { includeAudio: false },
           );
           if (!still()) return;
+
+          // The mic heard the assistant itself — not a customer request, so ignore it.
+          if (isEcho(result.kannada_text, spokenRef.current.map((l) => l.text))) {
+            console.warn("[hands-free] Ignored echo of the assistant's own voice");
+            continue;
+          }
 
           setLastResult(result);
           rememberTurn(result);

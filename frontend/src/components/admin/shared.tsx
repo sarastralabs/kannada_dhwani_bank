@@ -67,14 +67,23 @@ export function intentLabel(intent: string | null | undefined): { en: string; kn
   return INTENT_LABELS[intent] ?? { en: intent.replace(/_/g, " "), kn: "", tone: "slate" };
 }
 
+/** Short closers and answers: asking "say again" for these is correct, not a miss. */
+const CONVERSATIONAL = /^(ಮುಗಿ\S*|ಧನ್ಯವಾದ\S*|ಆಯ್ತು|ಹೌದು|ಹೌದ|ಇಲ್ಲ\S*|ಸರಿ|ಬೇಡ|finish\w*|thank\w*|thanks|yes|no|ok(ay)?)$/i;
+
+/** Below this score the pipeline asks the customer to repeat (BANK_NLU_MIN_CONF default). */
+const ACTED_ON_CONFIDENCE = 0.35;
+
 /**
- * A turn staff should look at: the assistant had to ask again, or was unsure.
- * form_select is rule-routed (confidence 0 by design) — not a problem.
+ * A real miss staff should look at: the assistant could not tell what was wanted.
+ * Rule-routed form turns, goodbyes and yes/no answers are not misses.
  */
 export function needsAttention(item: HistoryItem): boolean {
+  if (item.intent === "form_select" || item.intent === "form_menu") return false; // rule-routed
+  const said = (item.kannada_text || "").replace(/[.,!?\s]+/g, " ").trim();
+  const english = (item.english_text || "").replace(/[.,!?\s]+/g, " ").trim();
+  if (CONVERSATIONAL.test(said) || CONVERSATIONAL.test(english)) return false;
   if (item.intent === "clarification") return true;
-  if (item.intent === "form_select") return false;
-  return typeof item.confidence === "number" && item.confidence < 0.5;
+  return typeof item.confidence === "number" && item.confidence < ACTED_ON_CONFIDENCE;
 }
 
 /* ── UI atoms ───────────────────────────────────────────────────────────── */
