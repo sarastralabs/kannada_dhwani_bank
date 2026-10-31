@@ -12,15 +12,17 @@ from __future__ import annotations
 import os
 import threading
 import warnings
+from typing import TYPE_CHECKING
 
 import numpy as np
 import soundfile as sf
 
-from backend.tts.speaker import KannadaSpeaker, _DEFAULT_MODEL_ID
+if TYPE_CHECKING:  # MMS fallback needs torch; imported lazily so cloud-only installs work
+    from backend.tts.speaker import KannadaSpeaker
 
 __all__ = ["synthesise", "synthesise_kannada", "unload_model", "parler_status"]
 
-_speaker: KannadaSpeaker | None = None
+_speaker: "KannadaSpeaker | None" = None
 _tts_lock = threading.Lock()
 
 
@@ -240,6 +242,8 @@ def synthesise_kannada(
         )
 
     global _speaker
+    from backend.tts.speaker import KannadaSpeaker, _DEFAULT_MODEL_ID
+
     with _tts_lock:
         if _speaker is None:
             _speaker = KannadaSpeaker(_DEFAULT_MODEL_ID, device=_mms_device())

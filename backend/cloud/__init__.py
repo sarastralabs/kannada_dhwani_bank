@@ -81,15 +81,25 @@ def key_fingerprint(key: str | None = None) -> str:
     return hashlib.sha256(key.encode("utf-8")).hexdigest()[:12] if key else ""
 
 
+def _env_default(stage: str) -> str:
+    """Provider when staff saved no choice: BANK_<STAGE>_PROVIDER, then BANK_CLOUD_PROVIDER.
+
+    Lets a host with no persistent disk (Render) run all-Sarvam from env vars alone.
+    """
+    env = os.environ.get(f"BANK_{stage.upper()}_PROVIDER", "").strip() or os.environ.get("BANK_CLOUD_PROVIDER", "").strip()
+    return env.lower() if env.lower() in PROVIDERS else "local"
+
+
 def get_config() -> dict[str, Any]:
     raw = _raw()
     config: dict[str, Any] = {}
     for stage in STAGES:
-        value = str(raw.get(stage) or "local").strip().lower()
+        value = str(raw.get(stage) or _env_default(stage)).strip().lower()
         config[stage] = value if value in PROVIDERS else "local"
     voice = str(raw.get("sarvam_voice") or TTS_VOICE_DEFAULT).strip().lower()
     config["sarvam_voice"] = voice if voice in TTS_VOICES else TTS_VOICE_DEFAULT
-    config["fallback_local"] = raw.get("fallback_local", True) is not False
+    fallback_default = os.environ.get("BANK_CLOUD_FALLBACK_LOCAL", "1").strip().lower() not in {"0", "false", "no", "off"}
+    config["fallback_local"] = raw.get("fallback_local", fallback_default) is not False
     return config
 
 

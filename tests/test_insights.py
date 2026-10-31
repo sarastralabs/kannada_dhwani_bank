@@ -94,3 +94,60 @@ def test_system_flags_default_admin_password(monkeypatch):
     assert insights.admin_system(_admin={})["default_admin_password"] is True
     monkeypatch.setenv("BANK_ADMIN_PASS", "a-strong-one")
     assert insights.admin_system(_admin={})["default_admin_password"] is False
+
+
+# ── Cloud-only mode (Render): env defaults and torch-free fallbacks ─────────
+
+def test_cloud_provider_defaults_come_from_env(monkeypatch):
+    from backend import cloud
+
+    monkeypatch.setenv("BANK_CLOUD_PROVIDER", "sarvam")
+    monkeypatch.setenv("BANK_CLOUD_FALLBACK_LOCAL", "0")
+    cfg = cloud.get_config()
+    assert (cfg["stt"], cfg["translation"], cfg["tts"]) == ("sarvam",) * 3
+    assert cfg["fallback_local"] is False
+
+
+def test_per_stage_env_overrides_global(monkeypatch):
+    from backend import cloud
+
+    monkeypatch.setenv("BANK_CLOUD_PROVIDER", "sarvam")
+    monkeypatch.setenv("BANK_TTS_PROVIDER", "local")
+    assert cloud.get_config()["tts"] == "local"
+
+
+def test_default_config_stays_local(monkeypatch):
+    from backend import cloud
+
+    for name in ("BANK_CLOUD_PROVIDER", "BANK_STT_PROVIDER", "BANK_TRANSLATION_PROVIDER", "BANK_TTS_PROVIDER", "BANK_CLOUD_FALLBACK_LOCAL"):
+        monkeypatch.delenv(name, raising=False)
+    cfg = cloud.get_config()
+    assert cfg["stt"] == "local" and cfg["fallback_local"] is True
+
+
+def test_nlu_uses_keyword_classifier_when_model_missing(monkeypatch, tmp_path):
+    from backend import nlu
+
+    monkeypatch.setattr(nlu, "MODEL_DIR", str(tmp_path / "nope"))
+    monkeypatch.setattr(nlu, "_classifier_cache", {})
+    intent, conf = nlu.classify("what is my account balance", model="finetuned")
+    assert intent and conf > 0
+    assert type(nlu._classifier_cache["finetuned"]).__name__ == "KeywordClassifier"
+
+
+def test_nlu_engine_env_forces_keyword(monkeypatch):
+    from backend import nlu
+
+    monkeypatch.setenv("BANK_NLU_ENGINE", "keyword")
+    monkeypatch.setattr(nlu, "_classifier_cache", {})
+    nlu.warm_model("finetuned")
+    assert type(nlu._classifier_cache["finetuned"]).__name__ == "KeywordClassifier"
+
+
+def test_missing_cloud_key_is_a_service_fault():
+    msg = "STT failed: Sarvam is selected for speech-to-text but no API key is set"
+    assert system_status.classify_error(msg) == "service_unavailable"
+
+
+def test_bad_audio_is_not_a_service_fault():
+    assert system_status.classify_error("STT failed: audio too short") == "not_understood"

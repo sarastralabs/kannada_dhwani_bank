@@ -1,23 +1,38 @@
-# Render blueprint — backend API only (frontends go on Cloudflare Pages).
-# Secrets are set in the Render dashboard (sync: false), never committed.
+# Render blueprint — cloud-only backend API (frontends are on Cloudflare).
+# Secrets (sync: false) are entered in the Render dashboard, never committed.
 services:
   - type: web
     name: dhwani-api
     runtime: docker
+    dockerfilePath: ./Dockerfile.cloud
     plan: free
     healthCheckPath: /health
     envVars:
+      # Speech: Sarvam for all three stages, no local fallback (no models on this host).
+      - key: BANK_CLOUD_PROVIDER
+        value: sarvam
+      - key: BANK_CLOUD_FALLBACK_LOCAL
+        value: "0"
+      - key: BANK_NLU_ENGINE
+        value: keyword
+      - key: BANK_PIPELINE_WARM_ON_START
+        value: "0"
+      - key: BANK_TTS_ALLOW_MMS
+        value: "0"
+      - key: BANK_CUSTOMER_STORE
+        value: sqlite
+      # Staff console
       - key: BANK_ADMIN_USER
         value: admin
       - key: BANK_ADMIN_PASS
         sync: false
+      # Secrets
       - key: SARVAM_API_KEY
         sync: false
       - key: MONGODB_URI
         sync: false
       - key: MONGODB_DB_NAME
         value: dhwani
+      # Frontends (the *.sarastralabs.com names are also allowed by default).
       - key: BANK_CORS_ORIGINS
-        sync: false # e.g. https://dhwani-kiosk.pages.dev,https://dhwani-admin.pages.dev
-      - key: BANK_PIPELINE_WARM_ON_START
-        value: "0"
+        value: https://dhwani.sarastralabs.com,https://admin-dhwani.sarastralabs.com

@@ -28,7 +28,10 @@ import warnings
 from typing import Literal
 
 from backend.stt.exceptions import STTInputError
-from backend.stt.transcriber import KannadaTranscriber
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:  # heavy (faster-whisper); imported lazily so cloud-only installs work
+    from backend.stt.transcriber import KannadaTranscriber
 
 __all__ = ["transcribe", "warm_model", "unload_model", "STTInputError"]
 
@@ -52,7 +55,7 @@ DEFAULT_MODEL: ModelName = "vasista-medium"
 # ---------------------------------------------------------------------------
 # Singleton cache — keyed by model name
 # ---------------------------------------------------------------------------
-_model_cache: dict[str, KannadaTranscriber] = {}
+_model_cache: dict[str, "KannadaTranscriber"] = {}
 
 
 def active_model_name() -> ModelName:
@@ -84,11 +87,29 @@ def _resolve_model(model: ModelName | None) -> ModelName:
     return selected
 
 
+def _transcriber_class():
+    """KannadaTranscriber, imported on first use (a module-level override wins)."""
+    override = globals().get("KannadaTranscriber")
+    if override is not None:
+        return override
+    from backend.stt.transcriber import KannadaTranscriber as cls
+
+    return cls
+
+
+def __getattr__(name: str):  # PEP 562: keeps ``backend.stt.KannadaTranscriber`` importable
+    if name == "KannadaTranscriber":
+        from backend.stt.transcriber import KannadaTranscriber as cls
+
+        return cls
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
 def warm_model(model: ModelName | None = None) -> ModelName:
     """Load and cache the selected STT model without transcribing audio."""
     selected = _resolve_model(model)
     if selected not in _model_cache:
-        _model_cache[selected] = KannadaTranscriber(MODEL_PATHS[selected])
+        _model_cache[selected] = _transcriber_class()(MODEL_PATHS[selected])
     return selected
 
 
@@ -209,7 +230,6 @@ def unload_model(model: ModelName | Literal["all"] | None = None) -> None:
         A registered model, ``None`` for the active model, or ``"all"``.
     """
     import gc
-    import torch
 
     global _model_cache
     keys = (
@@ -221,5 +241,9 @@ def unload_model(model: ModelName | Literal["all"] | None = None) -> None:
         if key in _model_cache:
             del _model_cache[key]
     gc.collect()
+    try:
+        import torch
+    except ImportError:  # cloud-only install: nothing on a GPU to free
+        return
     if torch.cuda.is_available():
         torch.cuda.empty_cache()

@@ -62,20 +62,29 @@ def _reply(payload: dict) -> None:
 
 
 def _warm() -> dict:
-    """Load request-path models before the kiosk accepts a conversation."""
+    """Load request-path models before the kiosk accepts a conversation.
+
+    Stages answered by Sarvam are skipped: loading their local model would waste
+    memory (and fails outright on cloud-only installs without torch).
+    """
+    from backend import cloud
+
     stages: dict[str, float] = {}
+    stt_model = "sarvam"
 
-    started = time.perf_counter()
-    from backend.stt import warm_model as warm_stt
+    if not cloud.use_cloud("stt"):
+        started = time.perf_counter()
+        from backend.stt import warm_model as warm_stt
 
-    stt_model = warm_stt()
-    stages["stt"] = round(time.perf_counter() - started, 2)
+        stt_model = warm_stt()
+        stages["stt"] = round(time.perf_counter() - started, 2)
 
-    started = time.perf_counter()
-    from backend.translation import warm_model as warm_translation
+    if not cloud.use_cloud("translation"):
+        started = time.perf_counter()
+        from backend.translation import warm_model as warm_translation
 
-    warm_translation("kn_to_en")
-    stages["translation"] = round(time.perf_counter() - started, 2)
+        warm_translation("kn_to_en")
+        stages["translation"] = round(time.perf_counter() - started, 2)
 
     started = time.perf_counter()
     from backend.nlu import warm_model as warm_nlu

@@ -12,7 +12,8 @@ from typing import Any
 _SERVICE_PATTERNS = re.compile(
     r"huggingface|couldn't connect|offline mode|not found in|no such file|"
     r"out of memory|cuda|cannot load|failed to load|model|worker|connection|"
-    r"timed out|timeout|oserror|importerror|modulenotfound|not ready|unavailable",
+    r"timed out|timeout|oserror|importerror|modulenotfound|not ready|unavailable|"
+    r"api key|sarvam|credit|quota|unauthori[sz]ed|forbidden|rate limit",
     re.IGNORECASE,
 )
 

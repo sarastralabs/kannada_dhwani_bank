@@ -15,3 +15,8 @@ data/history_audio
 data/runtime_settings.json
 data/cloud_status.json
 data/form_submissions.jsonl
+data/stt_test_audio
+data/translation_test
+data/tts_cache
+data/tts_output
+data/greetings

@@ -26,8 +26,11 @@ direction reuses the already-loaded IndicTranslator instance — no reload.
 from __future__ import annotations
 
 from backend.translation.exceptions import TranslationInputError
-from backend.translation.translator import IndicTranslator
+from typing import TYPE_CHECKING
 from backend.translation.utils import is_empty_input, validate_direction
+
+if TYPE_CHECKING:  # heavy (torch/transformers); imported lazily so cloud-only installs work
+    from backend.translation.translator import IndicTranslator
 
 __all__ = [
     "translate",
@@ -55,7 +58,7 @@ MODEL_IDS: dict[tuple[str, str], str] = {
 # are created if both directions are used in the same session — one per
 # checkpoint, never shared.
 # ---------------------------------------------------------------------------
-_model_cache: dict[str, IndicTranslator] = {}
+_model_cache: dict[str, "IndicTranslator"] = {}
 
 
 def warm_model(direction: str = "kn_to_en") -> str:
@@ -68,6 +71,8 @@ def warm_model(direction: str = "kn_to_en") -> str:
         raise ValueError(f"Unknown translation direction {direction!r}.")
     model_id = MODEL_IDS[directions[direction]]
     if model_id not in _model_cache:
+        from backend.translation.translator import IndicTranslator
+
         _model_cache[model_id] = IndicTranslator(model_id)
     return model_id
 
@@ -244,7 +249,6 @@ def unload_model(direction: str = "all") -> None:
         ``"kn_to_en"``, ``"en_to_kn"``, or ``"all"`` (default).
     """
     import gc
-    import torch
 
     global _model_cache
     if direction == "kn_to_en":
@@ -258,5 +262,9 @@ def unload_model(direction: str = "all") -> None:
         if key in _model_cache:
             del _model_cache[key]
     gc.collect()
+    try:
+        import torch
+    except ImportError:  # cloud-only install: nothing on a GPU to free
+        return
     if torch.cuda.is_available():
         torch.cuda.empty_cache()

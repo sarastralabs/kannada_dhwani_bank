@@ -1,0 +1,22 @@
+# Cloud-only backend (Sarvam speech + keyword intents). No torch, no model files —
+# small enough for Render's free 512 MB tier. Full local-model image: Dockerfile.
+FROM python:3.12-slim
+
+ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg libsndfile1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements-cloud.txt .
+RUN pip install -r requirements-cloud.txt
+
+COPY api ./api
+COPY backend ./backend
+COPY data ./data
+COPY run_*.py ./
+
+EXPOSE 8000
+CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

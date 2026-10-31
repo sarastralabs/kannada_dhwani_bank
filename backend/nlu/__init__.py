@@ -42,12 +42,27 @@ _VALID_MODELS = {"baseline", "finetuned"}
 _classifier_cache: dict[str, Any] = {}
 
 
+def _keyword_only() -> bool:
+    """True when DistilBERT cannot or should not load (small cloud hosts).
+
+    Set ``BANK_NLU_ENGINE=keyword`` to force it; it is also used automatically when
+    the checkpoint folder is missing, since models/ is not in git.
+    """
+    if os.environ.get("BANK_NLU_ENGINE", "").strip().lower() == "keyword":
+        return True
+    return not os.path.isdir(MODEL_DIR)
+
+
 def warm_model(model: str = "finetuned") -> str:
     """Load and cache an NLU classifier without classifying a request."""
     if model not in _VALID_MODELS:
         raise ValueError(f"Unknown model {model!r}. Valid options: {sorted(_VALID_MODELS)}.")
     if model not in _classifier_cache:
         if model == "baseline":
+            from backend.nlu.keyword_classifier import KeywordClassifier
+
+            _classifier_cache[model] = KeywordClassifier()
+        elif _keyword_only():
             from backend.nlu.keyword_classifier import KeywordClassifier
 
             _classifier_cache[model] = KeywordClassifier()
@@ -143,7 +158,6 @@ def unload_model(model: str = "all") -> None:
         ``"finetuned"``, ``"baseline"``, or ``"all"`` (default).
     """
     import gc
-    import torch
 
     global _classifier_cache
     keys = list(_classifier_cache.keys()) if model == "all" else [model]
@@ -151,5 +165,9 @@ def unload_model(model: str = "all") -> None:
         if key in _classifier_cache:
             del _classifier_cache[key]
     gc.collect()
+    try:
+        import torch
+    except ImportError:  # cloud-only install: nothing on a GPU to free
+        return
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
