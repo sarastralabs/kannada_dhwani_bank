@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 
 from fastapi import APIRouter
 
@@ -40,6 +41,24 @@ def _load_bank_info() -> dict:
         return {}
 
 
+def rate_percent(text: str) -> float | None:
+    """"3 point 5 percent per annum" -> 3.5, "11 percent per annum" -> 11.0, "7 point 25 ..." -> 7.25."""
+    m = re.match(r"\s*(\d+)(?:\s+point\s+(\d+))?", text or "", re.IGNORECASE)
+    if not m:
+        return None
+    return float(f"{m.group(1)}.{m.group(2) or 0}")
+
+
+def rates_table(rates: dict) -> dict[str, dict]:
+    """Numeric rates for the landing page: {"savings_account": {"percent": 3.5, "floating": False}, ...}."""
+    table: dict[str, dict] = {}
+    for key, text in rates.items():
+        value = rate_percent(str(text))
+        if value is not None:
+            table[key] = {"percent": value, "floating": "floating" in str(text).lower()}
+    return table
+
+
 @router.get("/landing")
 def landing_data() -> dict:
     bank = _load_bank_info()
@@ -64,6 +83,7 @@ def landing_data() -> dict:
         },
         "intents": INTENTS,
         "interest_rates": rate_rows,
+        "rates": rates_table(rates),
         "pipeline": PIPELINE,
         # Public landing responses must not expose customer transcripts.
         "recent": [],

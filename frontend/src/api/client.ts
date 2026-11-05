@@ -81,6 +81,8 @@ export interface LandingData {
   };
   intents: Array<{ id: string; label: string; example: string }>;
   interest_rates: Array<{ product: string; rate: string }>;
+  /** Numeric rates by key (savings_account, fixed_deposit_1yr, home_loan …). */
+  rates?: Record<string, { percent: number; floating: boolean }>;
   pipeline: Array<{ step: number; name: string; detail: string }>;
   recent: Array<{
     id: number;

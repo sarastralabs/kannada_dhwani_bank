@@ -11,17 +11,30 @@ export function getApiBase(): string {
   return "";
 }
 
+/**
+ * The kiosk lives at /agent; the site root is the landing page. A bare origin gets "/agent"
+ * added, an address that already has a path is left alone.
+ */
+export function withAgentPath(url: string): string {
+  const trimmed = url.trim().replace(/\/+$/, "");
+  try {
+    return new URL(trimmed).pathname === "/" ? `${trimmed}/agent` : trimmed;
+  } catch {
+    return trimmed;
+  }
+}
+
 /** Known Cloudflare host → agent lobby (admin “open lobby” links). */
 const CLOUDFLARE_AGENT_URL: Record<string, string> = {
   "admin.sarastralabs.com": "https://agent.sarastralabs.com",
-  "admin-dhwani.sarastralabs.com": "https://dhwani.sarastralabs.com",
+  "admin-dhwani.sarastralabs.com": "https://dhwani.sarastralabs.com/agent",
 };
 
 /** Agent lobby URL for admin "open lobby" links — http on localhost, same protocol elsewhere. */
 export function getLobbyUrl(): string {
   const env = import.meta.env.VITE_AGENT_URL as string | undefined;
   if (env?.trim()) {
-    return env.replace(/\/$/, "");
+    return withAgentPath(env);
   }
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
@@ -29,9 +42,9 @@ export function getLobbyUrl(): string {
     if (mapped) return mapped;
     // localhost / 127.0.0.1: mic works on http, so use http for local dev
     if (host === "localhost" || host === "127.0.0.1") {
-      return `http://${host}:5173`;
+      return `http://${host}:5173/agent`;
     }
-    return `${window.location.protocol}//${host}:5173`;
+    return `${window.location.protocol}//${host}:5173/agent`;
   }
-  return "http://127.0.0.1:5173";
+  return "http://127.0.0.1:5173/agent";
 }

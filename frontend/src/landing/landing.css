@@ -1,0 +1,769 @@
+/*
+ * Landing page (route "/"). Everything is scoped under .lp so it cannot touch the kiosk.
+ * Colours come from the shared tokens in theme.css (indigo, saffron, teal, cream).
+ */
+
+html.lp-active {
+  scroll-behavior: smooth;
+}
+
+.lp {
+  --lp-ink: #1c1838;
+  --lp-muted: #5d5878;
+  --lp-card: #ffffff;
+  --lp-tint: #f6f1ff;
+  min-height: 100vh;
+  background: var(--dh-cream);
+  color: var(--lp-ink);
+  font-family: var(--font-kn);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+:where(.lp) :where(h1, h2, h3, p, ul, ol, dl) {
+  margin: 0;
+}
+
+:where(.lp) :where(ul, ol) {
+  padding: 0;
+  list-style: none;
+}
+
+:where(.lp) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lp :focus-visible {
+  outline: 3px solid var(--dh-saffron);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.lp-wrap {
+  width: min(1120px, 100% - 2rem);
+  margin: 0 auto;
+}
+
+.lp-wrap--narrow {
+  width: min(780px, 100% - 2rem);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+
+.lp-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem clamp(1rem, 4vw, 2.5rem);
+  background: rgba(18, 13, 51, 0.88);
+  backdrop-filter: blur(10px);
+  color: #fff;
+}
+
+.lp-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.lp-brand-mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #ffc46b, var(--dh-saffron-deep));
+  color: #2a1700;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.lp-brand-name {
+  font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lp-nav {
+  display: none;
+  gap: 1.4rem;
+  margin-left: auto;
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.lp-nav a {
+  padding: 0.25rem 0.1rem;
+  opacity: 0.88;
+  border-bottom: 2px solid transparent;
+}
+
+.lp-nav a:hover {
+  opacity: 1;
+  border-color: var(--dh-saffron);
+}
+
+.lp-header .lp-btn {
+  margin-left: auto;
+}
+
+@media (min-width: 900px) {
+  .lp-nav {
+    display: flex;
+  }
+
+  .lp-header .lp-btn {
+    margin-left: 0.5rem;
+  }
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.lp-btn:hover {
+  transform: translateY(-2px);
+}
+
+.lp-btn--saffron {
+  background: linear-gradient(145deg, #ffbd59, var(--dh-saffron) 55%, var(--dh-saffron-deep));
+  color: #2a1700;
+  box-shadow: 0 10px 26px rgba(224, 130, 11, 0.4);
+}
+
+.lp-btn--ghost {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.lp-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lp-btn--sm {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+}
+
+.lp-btn--lg {
+  padding: 0.95rem 1.7rem;
+  font-size: clamp(1.05rem, 2.6vw, 1.2rem);
+}
+
+.lp-link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  color: var(--dh-indigo-700);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+
+.lp-hero {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1rem, 5vw, 3rem) clamp(2.5rem, 6vw, 4.5rem);
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 85% 10%, rgba(255, 166, 43, 0.3) 0%, transparent 45%),
+    radial-gradient(ellipse at 10% 0%, rgba(91, 78, 224, 0.55) 0%, transparent 50%),
+    linear-gradient(160deg, var(--dh-indigo-950) 0%, #2a1f7a 55%, #1a1160 100%);
+}
+
+.lp-hero-text,
+.lp-hero-art {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.lp-kicker {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 166, 43, 0.18);
+  color: #ffc46b;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.lp-hero h1 {
+  margin-top: 0.35rem;
+  font-size: clamp(2rem, 6.4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.lp-lead {
+  margin: 1rem 0 1.5rem;
+  max-width: 34rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.lp-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.lp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+}
+
+.lp-chips li {
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.lp-demo {
+  margin-top: 1.2rem;
+  max-width: 34rem;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.lp-hero-art {
+  display: grid;
+  place-items: center;
+}
+
+.lp-hero-mascot-link {
+  display: block;
+  border-radius: 50%;
+}
+
+.lp-hero-mascot.agent-mascot {
+  width: min(72vw, 360px);
+  margin: 0;
+}
+
+.lp-hero-mascot .agent-mascot-svg {
+  width: min(72vw, 340px);
+}
+
+@media (min-width: 900px) {
+  .lp-hero {
+    grid-template-columns: 1.15fr 0.85fr;
+    padding-inline: max(3rem, calc((100% - 1120px) / 2));
+  }
+
+  .lp-hero-text,
+  .lp-hero-art {
+    width: auto;
+    margin: 0;
+  }
+
+  .lp-hero-mascot.agent-mascot {
+    width: min(34vw, 420px);
+  }
+
+  .lp-hero-mascot .agent-mascot-svg {
+    width: min(32vw, 400px);
+  }
+}
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+
+.lp-section {
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+  scroll-margin-top: 4rem;
+}
+
+.lp-section--tint {
+  background: var(--lp-tint);
+}
+
+.lp-section h2,
+.lp-final h2 {
+  font-size: clamp(1.6rem, 4.4vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--dh-indigo-900);
+}
+
+.lp-section-lead {
+  margin-top: 0.4rem;
+  color: var(--lp-muted);
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+}
+
+/* Services */
+
+.lp-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 1rem;
+  margin-top: 1.6rem;
+}
+
+.lp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.2rem 1.2rem 1.1rem;
+  border-radius: 20px;
+  background: var(--lp-card);
+  border: 1px solid #ebe5f4;
+  box-shadow: 0 8px 24px rgba(27, 20, 80, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.lp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(27, 20, 80, 0.12);
+}
+
+.lp-card-icon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 14px;
+  background: #fff1d9;
+  font-size: 1.5rem;
+}
+
+.lp-card h3,
+.lp-safety h3,
+.lp-step h3,
+.lp-journey h3,
+.lp-rate-card h3,
+.lp-tips h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--dh-indigo-900);
+}
+
+.lp-say {
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  background: #e8faf7;
+  color: #0b5f55;
+  font-weight: 700;
+}
+
+.lp-say span {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #0b7a6c;
+}
+
+.lp-card-note {
+  font-size: 0.92rem;
+  color: var(--lp-muted);
+}
+
+/* How it works */
+
+.lp-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1.2rem;
+  margin-top: 1.8rem;
+}
+
+.lp-step {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 1.2rem 1.2rem 1.5rem;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid #e7dffa;
+  text-align: center;
+}
+
+.lp-step-no {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.9rem;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--dh-indigo-700);
+  color: #fff;
+  font-weight: 800;
+}
+
+.lp-step p {
+  color: var(--lp-muted);
+}
+
+.lp-pose {
+  width: clamp(120px, 28vw, 170px);
+  height: auto;
+  filter: drop-shadow(0 10px 14px rgba(27, 20, 80, 0.25));
+  animation: lp-bob 3.2s ease-in-out infinite;
+}
+
+.lp-pose--speaking {
+  animation-duration: 0.9s;
+}
+
+.lp-pose--thinking {
+  animation-duration: 2.4s;
+}
+
+.lp-tips {
+  margin-top: 1.6rem;
+  padding: 1.1rem 1.3rem;
+  border-radius: 20px;
+  background: #fff4e0;
+  border: 1px solid #ffdca0;
+}
+
+.lp-tips ul {
+  display: grid;
+  gap: 0.35rem 1.5rem;
+  margin-top: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.lp-tips li::before {
+  content: "✓ ";
+  font-weight: 800;
+  color: #0b7a6c;
+}
+
+/* Journey */
+
+.lp-journey {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.6rem;
+  counter-reset: none;
+}
+
+.lp-journey li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #ebe5f4;
+}
+
+.lp-journey-no {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffbd59, var(--dh-saffron-deep));
+  color: #2a1700;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.lp-journey p {
+  color: var(--lp-muted);
+}
+
+@media (min-width: 1000px) {
+  .lp-journey {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .lp-journey li {
+    flex-direction: column;
+  }
+}
+
+/* Rates */
+
+.lp-rate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.lp-rate-card {
+  padding: 1.2rem 1.3rem;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #e7dffa;
+}
+
+.lp-rate-card dl {
+  margin-top: 0.6rem;
+}
+
+.lp-rate-card dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed #e7dffa;
+}
+
+.lp-rate-card dl > div:last-child {
+  border-bottom: 0;
+}
+
+.lp-rate-card dd {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.lp-rate-card strong {
+  font-size: 1.25rem;
+  color: var(--dh-indigo-700);
+}
+
+.lp-rate-card small {
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  background: #fff1d9;
+  color: #8a4b00;
+  font-weight: 700;
+}
+
+.lp-rate-status {
+  margin-top: 1.4rem;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px dashed #cfc4ee;
+  color: var(--lp-muted);
+}
+
+.lp-fineprint {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--lp-muted);
+}
+
+/* Safety */
+
+.lp-safety {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.lp-safety li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.2rem;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #ebe5f4;
+}
+
+.lp-safety p {
+  color: var(--lp-muted);
+}
+
+/* FAQ */
+
+.lp-faq {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.lp-faq details {
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e7dffa;
+  overflow: hidden;
+}
+
+.lp-faq summary {
+  padding: 0.95rem 1.2rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--dh-indigo-900);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lp-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.lp-faq summary::after {
+  content: "＋";
+  flex: none;
+  color: var(--dh-saffron-deep);
+  font-weight: 800;
+}
+
+.lp-faq details[open] summary::after {
+  content: "－";
+}
+
+.lp-faq details p {
+  padding: 0 1.2rem 1.1rem;
+  color: var(--lp-muted);
+}
+
+/* Final call */
+
+.lp-final {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  padding: clamp(2.5rem, 6vw, 4rem) 1rem;
+  text-align: center;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 166, 43, 0.3) 0%, transparent 55%),
+    linear-gradient(160deg, var(--dh-indigo-950) 0%, #2a1f7a 100%);
+}
+
+.lp-final h2 {
+  color: #fff;
+}
+
+.lp-final p {
+  max-width: 30rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+}
+
+/* Footer */
+
+.lp-footer {
+  padding: 1.6rem 1rem 2rem;
+  text-align: center;
+  background: var(--dh-indigo-950);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lp-footer .lp-fineprint {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Floating helper */
+
+.lp-helper {
+  position: fixed;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  animation: lp-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lp-helper-main {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 1rem 0.35rem 0.4rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid var(--dh-saffron);
+  box-shadow: 0 12px 30px rgba(27, 20, 80, 0.3);
+  font-weight: 800;
+  color: var(--dh-indigo-900);
+}
+
+.lp-helper-main img {
+  width: 3.4rem;
+  height: 3.4rem;
+  object-fit: contain;
+  animation: lp-bob 2.6s ease-in-out infinite;
+}
+
+.lp-helper-close {
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(27, 20, 80, 0.75);
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 420px) {
+  .lp-helper-main span {
+    display: none;
+  }
+
+  .lp-helper-main {
+    padding-right: 0.4rem;
+  }
+}
+
+@keyframes lp-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes lp-pop {
+  from { opacity: 0; transform: translateY(14px) scale(0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.lp-active {
+    scroll-behavior: auto;
+  }
+
+  .lp-pose,
+  .lp-helper,
+  .lp-helper-main img,
+  .lp-card {
+    animation: none;
+    transition: none;
+  }
+}

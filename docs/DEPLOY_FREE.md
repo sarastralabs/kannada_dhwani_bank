@@ -46,3 +46,12 @@ keyword classifier before relying on Render.
 * `GET <backend>/health` → `{"status":"ok"}`
 * Open the admin console → Overview → **System health** shows each engine and the database.
 * Browsers only allow the microphone over HTTPS (Pages provides it) or on `localhost`.
+
+## Addresses
+| Address | What it shows |
+|---|---|
+| `https://dhwani.sarastralabs.com/` | Kannada landing page, with a big **ಏಜೆಂಟ್** button |
+| `https://dhwani.sarastralabs.com/agent` | the voice kiosk (set a counter kiosk's start page to this) |
+| `https://admin-dhwani.sarastralabs.com/` | staff console (its "Customer screen" button opens `/agent`) |
+
+The landing text is in `frontend/src/landing/content.ts`; edit the wording there.
